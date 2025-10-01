@@ -19,7 +19,7 @@ but the probability that i can be bothered to do that is around 0.0000001%
 * Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 * If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
-* DO NOT trust the "ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps". This warning is a LIE. Make payout structure as big as you want. The higher exploitability part is true tho.
+* DO NOT trust the "ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps". This warning is a LIE. I added caching. Make payout structure as big as you want. (The higher exploitability part is true tho)
 
 # Gem Gemson (PRO) announcement:
 
