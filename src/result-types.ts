@@ -77,6 +77,8 @@ export type Spot = SpotRoot | SpotChance | SpotPlayer | SpotTerminal;
 export const displayModeList = [
   "basics",
   "graphs",
+  "strategy",
+  "blockers", // imagine that this section does not exist
   // "scatter",
   "compare",
   "chance",
