@@ -15,7 +15,7 @@ but the probability that i can be bothered to do that is around 0.0000001%
 # IMPORTANT NOTES:
 * Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
-* If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines hecks today
+* If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
 
 # Gem Gemson (PRO) announcement:
 
