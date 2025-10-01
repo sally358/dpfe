@@ -1,11 +1,11 @@
 [package]
-name = "desktop-postflop"
-version = "0.2.7"
-description = "The most advanced open-source GTO solver"
-authors = ["Wataru Inariba"]
+name = "desktop-postflop-foldem"
+version = "0.2.0"
+description = "The most advanced open-source GTO solver made vorse"
+authors = ["Wataru Inariba (Desktop Postflop)", "Sally358 (Foldem edition features)"]
 license = "AGPL-3.0-or-later"
 repository = "https://github.com/b-inary/desktop-postflop/tree/main/src-tauri"
-edition = "2021"
+edition = "2025"
 rust-version = "1.65"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -17,7 +17,7 @@ tauri-build = { version = "1.5.0", features = [] }
 serde_json = "1.0.107"
 serde = { version = "1.0.188", features = ["derive"] }
 tauri = { version = "1.5.0", features = ["dialog-open", "dialog-save", "fs-read-file", "fs-write-file", "shell-open"] }
-postflop-solver = { git = "https://github.com/b-inary/postflop-solver", features = ["custom-alloc"] }
+postflop-solver = { git = "https://github.com/sally358/postflop-solver-dpfe", features = ["custom-alloc"] }
 rayon = "1.8.0"
 sysinfo = "0.29.10"
 
