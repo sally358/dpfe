@@ -185,6 +185,11 @@ export const gameInit = async (
   board: number[],
   startingPot: number,
   effectiveStack: number,
+  isIcm: boolean,
+  icmStackOop: number,
+  icmStackIp: number,
+  icmPayouts: number[],
+  icmStacks: number[],
   rakeRate: number,
   rakeCap: number,
   donkOption: boolean,
@@ -212,9 +217,18 @@ export const gameInit = async (
     board,
     startingPot,
     effectiveStack,
+
+    isIcm,
+    icmStackOop,
+    icmStackIp,
+    icmPayouts,
+    icmStacks,
+
     rakeRate,
     rakeCap,
+
     donkOption,
+
     oopFlopBet,
     oopFlopRaise,
     oopTurnBet,
@@ -223,12 +237,14 @@ export const gameInit = async (
     oopRiverBet,
     oopRiverRaise,
     oopRiverDonk,
+
     ipFlopBet,
     ipFlopRaise,
     ipTurnBet,
     ipTurnRaise,
     ipRiverBet,
     ipRiverRaise,
+    
     addAllinThreshold,
     forceAllinThreshold,
     mergingThreshold,

@@ -78,7 +78,7 @@ export const displayModeList = [
   "basics",
   "graphs",
   "strategy",
-  "blockers", // imagine that this section does not exist
+  "blockers",
   // "scatter",
   "compare",
   "chance",

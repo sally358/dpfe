@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { sanitizeBetString } from "./utils";
 
-export type NavView = "solver" | "results";
+export type NavView = "solver" | "results" | "export";
 
 export type SideView =
   | "oop-range"
   | "ip-range"
   | "board"
+  | "icm"
   | "tree-config"
   | "bunching"
   | "run-solver"
@@ -91,6 +92,7 @@ export const useStore = defineStore("app", {
       board: ["Board"],
       "tree-config": ["Tree Configuration"],
       bunching: ["Bunching Effect"],
+      "icm": ["ICM"],
       "run-solver": ["Run Solver"],
     },
     ranges: Array.from({ length: 6 }, () =>
@@ -99,6 +101,13 @@ export const useStore = defineStore("app", {
     isBunchingEnabled: false,
     isBunchingRunning: false,
     bunchingFlop: [] as number[],
+
+    isICMEnabled: false,
+    icmStacks: [] as number[],
+    icmPayouts: [] as number[],
+    icmOOPStack: 100,
+    icmIPStack: 100,
+
     isSolverRunning: false,
     isSolverPaused: false,
     isSolverFinished: false,
@@ -228,3 +237,4 @@ export const useSavedConfigStore = defineStore("savedConfig", {
     removedLines: "",
   }),
 });
+
