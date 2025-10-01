@@ -10,11 +10,11 @@ added sally features:
 ongoing updates:
 * icm support
 
-the next section is from original DP by b-inary.
-
 # IMPORTANT NOTES:
 * Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEXT DRILLS.
+
+the next section is from original DP by b-inary.
 
 # Desktop Postflop
 
