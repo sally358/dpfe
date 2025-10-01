@@ -102,7 +102,7 @@ See the [WASM Postflop repository] for more detailed comparisons, including some
   - x86-64: must support AVX2 instructions
     - Intel: Haswell (2013) and later
     - AMD: Zen (1st gen; 2017) and later
-    - If you have a CPU without AVX2 support, you can modify `src-tauri/.cargo/config.toml` and build it yourself.
+    - If you have a CPU without AVX2 support, you can modify `src-tauri/.cargo/config.toml` and build it yourself. (sally note: I modified it, but you can reenable it in that same very place if you want)
   - Apple silicon: M1 and later
 
 ## Download
