@@ -8,7 +8,9 @@ added sally features:
 * drill exporter (i'll probably make it better one day for more customization)
 
 ongoing updates:
-* support
+* icm support
+
+the next section is from original DP by b-inary.
 
 # Desktop Postflop
 
