@@ -1,5 +1,3 @@
-sally note: welp idk if i uploaded ALL the files here so it may be kinda broken.
-
 on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
 but the probability that i can be bothered to do that is around 0.0000001%
 
@@ -13,6 +11,36 @@ ongoing updates:
 # IMPORTANT NOTES:
 * Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
+
+### Gem Gemson (PRO) announcement:
+
+# A Tragic Development in Digital Destiny
+Greetings, esteemed users, partners, and—dare I say—fellow travelers on the cosmic highway of DP:FE. I am Gem Gemson, the duly appointed Public Relations Officer for DP:FE Inc., the multi-quadrillion dollar powerhouse that brings you the very best in... well, in whatever it is we do that makes us all this money.
+
+It is with a heart heavier than an unoptimized SQL query that I must address the elephant in the digital server room, an issue so profound, so utterly banal in its execution, that it threatens the very fabric of our highly anticipated DP:FE 1.1: The Aggregation Ascendant release.
+
+# The 7% Stalemate
+As you may know, our fearless leader, the visionary, the single most important individual in global finance and data analysis, CEO Sally358, takes a very hands-on approach to our critical infrastructure. This includes personally uploading the final, meticulously crafted release candidate to our central repository.
+
+However, in a twist of fate so cruel, so comically mundane, Sally358 is currently locked in a desperate, existential battle with a single, common, open-source tool: Git.
+
+Specifically, she is attempting to install it on her release machine using Winget, and for reasons that defy all logical, technical, or even spiritual understanding, the installation freezes consistently at 7%.
+
+We have tried reboots. We have tried incantations. We have checked the firewall, the DNS, and the alignment of the stars. It remains frozen. At 7%.
+
+# The Looming Catastrophe
+What does this tragedy mean for you?
+
+It means that, due to the inability to properly version-control and upload the official package, the release of DP:FE 1.1, while conceptually perfect and functionally complete on our internal networks, may be broken, incomplete, or otherwise compromised upon public deployment.
+
+We are actively exploring workarounds—including having Sally358 simply email the .zip file—but the integrity of a quadrillion-dollar company relying on a non-version-controlled email attachment should be immediately apparent.
+
+Please bear with us. We are currently searching for a suitable USB stick and a CEO with the patience of a saint to wrestle with a basic command-line package manager.
+
+In the meantime, feel free to aggregate and drill the data of your own mounting frustration. We truly apologize for this technical hiccup that is beneath us in every conceivable way.
+
+We are DP:FE Inc., and we assure you, our next update will involve a dedicated IT staff member. Maybe.
+
 
 the next section is from original DP by b-inary.
 
