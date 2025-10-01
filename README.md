@@ -42,7 +42,7 @@ In the meantime, feel free to aggregate and drill the data of your own mounting 
 We are DP:FE Inc., and we assure you, our next update will involve a dedicated IT staff member. Maybe.
 
 
-the next section is from original DP by b-inary.
+_the next section is from original DP by b-inary._
 
 # Desktop Postflop
 
