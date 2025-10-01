@@ -9,7 +9,7 @@ in development:
 * nothing. I'm on my well deserved vacation
 
 planned features:
-* idk. if i'll get inspiration maybe i'll come up with something. nodelocking maybe, though it's kinda meh
+* idk. if i'll get inspiration maybe i'll come up with something. nodelocking maybe, though it's kinda meh, who uses nodelocking unironically anyways lol
 
 on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
 but the probability that i can be bothered to do that is around 0.0000001%
