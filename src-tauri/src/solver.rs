@@ -72,6 +72,13 @@ pub fn game_init(
     board: Vec<u8>,
     starting_pot: i32,
     effective_stack: i32,
+
+    is_icm: bool,
+    icm_stack_oop: i32,
+    icm_stack_ip: i32,
+    icm_payouts: Vec<f64>,
+    icm_stacks: Vec<i32>,
+
     rake_rate: f64,
     rake_cap: f64,
     donk_option: bool,
@@ -114,6 +121,13 @@ pub fn game_init(
         initial_state: state,
         starting_pot,
         effective_stack,
+
+        is_icm,
+        icm_stack_oop,
+        icm_stack_ip,
+        icm_payouts,
+        icm_stacks,
+
         rake_rate,
         rake_cap,
         flop_bet_sizes: [

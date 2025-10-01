@@ -119,6 +119,13 @@ pub fn tree_new(
         initial_state,
         starting_pot,
         effective_stack,
+
+        is_icm: false,
+        icm_stack_oop: 0,
+        icm_stack_ip: 0,
+        icm_payouts: vec![],
+        icm_stacks: vec![],
+
         rake_rate: 0.0,
         rake_cap: 0.0,
         flop_bet_sizes: [
