@@ -3,9 +3,8 @@ yeah, you have to compile it to use it.
 added sally features:
 * strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
 * drill exporter (i'll probably make it better one day for more customization and less ugly ui)
+* icm support (it gives a bit silly though relatively logical results, so I'm not sure if I implemented it correctly, but it surely exists)
 
-in development:
-* icm support
 
 on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
 but the probability that i can be bothered to do that is around 0.0000001%
