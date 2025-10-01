@@ -88,6 +88,13 @@ export const cardPairOrder = (pair: number) => {
   return ((((hr * 2 + +isPair) * 2 + +isSuited) * 16 + lr) * 4 + hs) * 4 + ls;
 };
 
+export const unPair = (pair: number) => {
+  let card1 = pair & 0xff;
+  let card2 = pair >>> 8;
+
+  return [card1, card2];
+}
+
 export const average = (values: number[], weights: number[]): number => {
   let sum = 0;
   let totalWeight = 0;
