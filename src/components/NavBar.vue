@@ -5,8 +5,8 @@
     <div class="flex relative w-full">
       <div class="flex items-center z-10">
         <div class="px-4">
-          <span class="text-lg font-semibold">Desktop Postflop</span>
-          <span class="pl-2 font-semibold text-gray-400">v0.2.7</span>
+          <span class="text-lg font-semibold">DP: Foldem Edition</span>
+          <span class="pl-2 font-semibold text-gray-400">v0.1.0</span>
         </div>
       </div>
 
@@ -38,6 +38,8 @@
           <ComputerDesktopIcon class="w-6 h-6" />
           <span class="pl-3">Solver</span>
         </button>
+
+        <!-- results button -->
         <button
           :class="
             'flex relative w-32 items-center justify-center font-semibold ' +
@@ -49,6 +51,44 @@
           <ChartBarIcon class="w-6 h-6" />
           <span class="pl-3">Results</span>
         </button>
+
+        <button
+          :class="
+            'flex relative w-32 items-center justify-center font-semibold ' +
+            'transition-colors hover:bg-slate-700 hover:text-blue-200 ' +
+            (store.navView === 'results' ? 'bg-slate-700 text-blue-200' : '')
+          "
+          @click="store.navView = 'export'"
+        >
+          <ChartBarIcon class="w-6 h-6" />
+          <span class="pl-3">Export</span>
+        </button>
+
+        <!--
+        <button
+          :class="
+            'flex relative w-32 items-center justify-center font-semibold ' +
+            'transition-colors hover:bg-slate-700 hover:text-blue-200 ' +
+            (store.navView === 'results' ? 'bg-slate-700 text-blue-200' : '')
+          "
+          @click="store.navView = 'results'"
+        >
+          <ChartBarIcon class="w-6 h-6" />
+          <span class="pl-3">Settings</span>
+        </button>
+        <button
+          :class="
+            'flex relative w-32 items-center justify-center font-semibold ' +
+            'transition-colors hover:bg-slate-700 hover:text-blue-200 ' +
+            (store.navView === 'results' ? 'bg-slate-700 text-blue-200' : '')
+          "
+          @click="store.navView = 'results'"
+        >
+          <ChartBarIcon class="w-6 h-6" />
+          <span class="pl-3">About</span>
+        </button>
+        -->
+        
       </div>
     </div>
   </nav>

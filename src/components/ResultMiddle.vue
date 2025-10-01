@@ -1,7 +1,13 @@
+<!--
+
+The nightmarish panel with "Basics", "Graphs" etc buttons from hell for the mortals to click on
+
+-->
+
 <template>
   <div class="flex shrink-0 h-12 border-y border-gray-500">
     <button
-      v-for="mode in ['basics', 'graphs', 'compare'] as const"
+      v-for="mode in ['basics', 'strategy', 'graphs', 'compare'] as const"
       :key="mode"
       :class="
         'flex w-[9%] h-full items-center justify-center font-semibold text-lg transition ' +
@@ -31,6 +37,7 @@
     <div
       class="flex ml-auto shrink-0 h-full px-4 items-center justify-start gap-2 snug"
     >
+      <!-- Display dropdowns -->
       <div
         v-if="['basics', 'graphs'].includes(displayMode)"
         class="flex flex-col items-start justify-center h-full"
@@ -49,6 +56,7 @@
         </select>
       </div>
 
+      <!-- Doesn't exist -->
       <div
         v-if="displayMode === 'chance'"
         class="flex flex-col items-start justify-center h-full"
@@ -67,6 +75,7 @@
         </select>
       </div>
 
+      <!-- More display dropdowns -->
       <div
         v-if="['basics', 'compare'].includes(displayMode)"
         class="flex flex-col items-start justify-center h-full"

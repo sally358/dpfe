@@ -1,3 +1,9 @@
+<!--
+
+The general frame in which selected window is displayed
+
+-->
+
 <template>
   <div
     v-if="!store.isSolverFinished"
@@ -47,6 +53,7 @@
       v-if="store.navView === 'results' && selectedSpot && results"
       class="flex flex-grow min-h-0"
     >
+      <!-- The standard page with general strategy -->
       <template v-if="displayMode === 'basics'">
         <ResultBasics
           style="flex: 4"
@@ -73,6 +80,7 @@
         />
       </template>
 
+      <!-- The Graphs page -->
       <template v-else-if="displayMode === 'graphs'">
         <ResultGraphs
           :cards="cards"
@@ -85,6 +93,7 @@
         />
       </template>
 
+      <!-- The Compare page -->
       <template v-else-if="displayMode === 'compare'">
         <ResultBasics
           style="flex: 5"
@@ -116,6 +125,21 @@
           :results="results"
           :display-options="displayOptions"
           display-player="ip"
+          :is-compare-mode="true"
+        />
+      </template>
+
+      <template v-else-if="displayMode === 'strategy'">
+        <ResultStrategy
+          style="flex: 5"
+          :cards="cards"
+          :selected-spot="selectedSpot"
+          :selected-chance="selectedChance"
+          :current-board="currentBoard"
+          :total-bet-amount="totalBetAmount"
+          :results="results"
+          :display-options="displayOptions"
+          :display-player="displayPlayerBasics"
           :is-compare-mode="true"
         />
       </template>
@@ -152,10 +176,14 @@ import {
 
 import ResultNav from "./ResultNav.vue";
 import ResultMiddle from "./ResultMiddle.vue";
-import ResultBasics from "./ResultBasics.vue";
+
 import ResultTable from "./ResultTable.vue";
+
+import ResultBasics from "./ResultBasics.vue";
 import ResultCompare from "./ResultCompare.vue";
 import ResultGraphs from "./ResultGraphs.vue";
+import ResultStrategy from "./ResultStrategy.vue";
+
 import ResultChance from "./ResultChance.vue";
 
 const store = useStore();
@@ -174,6 +202,7 @@ const currentBoard = ref<number[]>([]);
 const results = ref<Results | null>(null);
 const chanceReports = ref<ChanceReports | null>(null);
 const totalBetAmount = ref([0, 0]);
+
 
 const isSolverFinished = ref(false);
 store.$subscribe(async (_, store) => {

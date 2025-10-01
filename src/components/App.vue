@@ -54,6 +54,13 @@
     >
       <ResultViewer />
     </div>
+
+    <div
+      v-show="store.navView === 'export'"
+      style="height: calc(max(100%, 720px) - 2.5rem)"
+    >
+      <ExportPage />
+    </div>
   </div>
 </template>
 
@@ -70,6 +77,7 @@ import BunchingEffect from "./BunchingEffect.vue";
 import RunSolver from "./RunSolver.vue";
 import AboutPage from "./AboutPage.vue";
 import ResultViewer from "./ResultViewer.vue";
+import ExportPage from "./ExportPage.vue";
 
 const store = useStore();
 const header = computed(() => store.headers[store.sideView].join(" > "));
