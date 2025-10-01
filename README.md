@@ -1,3 +1,8 @@
+sally note: welp idk if i uploaded ALL the files here so it may be kinda broken.
+
+on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
+but the probability that i can be bothered to do that is around 0.0000001%
+
 # Desktop Postflop
 
 > [!IMPORTANT]
