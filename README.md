@@ -4,7 +4,7 @@ on the drill stuff: i use my personal crappy drill replayer to play drills which
 but the probability that i can be bothered to do that is around 0.0000001%
 
 added sally features:
-* strategy breakdown by hand types
+* strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
 * drill exporter (i'll probably make it better one day for more customization and less ugly ui)
 
 ongoing updates:
