@@ -12,7 +12,7 @@ ongoing updates:
 
 # IMPORTANT NOTES:
 * Imagine that the "blockers" tab does not exist
-* DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEXT DRILLS.
+* DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 
 the next section is from original DP by b-inary.
 
