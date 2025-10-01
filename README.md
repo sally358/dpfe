@@ -12,14 +12,14 @@ ongoing updates:
 * Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 
-### Gem Gemson (PRO) announcement:
+# Gem Gemson (PRO) announcement:
 
-# A Tragic Development in Digital Destiny
+## A Tragic Development in Digital Destiny
 Greetings, esteemed users, partners, and—dare I say—fellow travelers on the cosmic highway of DP:FE. I am Gem Gemson, the duly appointed Public Relations Officer for DP:FE Inc., the multi-quadrillion dollar powerhouse that brings you the very best in... well, in whatever it is we do that makes us all this money.
 
 It is with a heart heavier than an unoptimized SQL query that I must address the elephant in the digital server room, an issue so profound, so utterly banal in its execution, that it threatens the very fabric of our highly anticipated DP:FE 1.1: The Aggregation Ascendant release.
 
-# The 7% Stalemate
+## The 7% Stalemate
 As you may know, our fearless leader, the visionary, the single most important individual in global finance and data analysis, CEO Sally358, takes a very hands-on approach to our critical infrastructure. This includes personally uploading the final, meticulously crafted release candidate to our central repository.
 
 However, in a twist of fate so cruel, so comically mundane, Sally358 is currently locked in a desperate, existential battle with a single, common, open-source tool: Git.
@@ -28,7 +28,7 @@ Specifically, she is attempting to install it on her release machine using Winge
 
 We have tried reboots. We have tried incantations. We have checked the firewall, the DNS, and the alignment of the stars. It remains frozen. At 7%.
 
-# The Looming Catastrophe
+## The Looming Catastrophe
 What does this tragedy mean for you?
 
 It means that, due to the inability to properly version-control and upload the official package, the release of DP:FE 1.1, while conceptually perfect and functionally complete on our internal networks, may be broken, incomplete, or otherwise compromised upon public deployment.
