@@ -20,6 +20,7 @@ but the probability that i can be bothered to do that is around 0.0000001%
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 * If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
 * DO NOT trust the "ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps". This warning is a LIE. I added caching. Make payout structure as big as you want. (The higher exploitability part is true tho)
+* It should be obvious but DO NOT use it through "npm tauri run dev". It is comically slow. Just compile it and run it normally, it is literally 100 times faster that way (YES, LITERALLY 100 TIMES)
 
 # Gem Gemson (PRO) announcement:
 
