@@ -5,6 +5,8 @@ added sally features:
 * drill exporter (i'll probably make it better one day for more customization and less ugly ui)
 * icm support (it gives a bit silly though relatively logical results, so I'm not sure if I implemented it correctly, but it surely exists)
 
+in development:
+* nothing. I'm on my deserved vacation
 
 on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
 but the probability that i can be bothered to do that is around 0.0000001%
