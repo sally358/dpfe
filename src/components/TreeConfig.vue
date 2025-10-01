@@ -36,7 +36,7 @@
                     ? 'input-error'
                     : '')
                 "
-                :disabled="hasEdit"
+                :disabled="hasEdit || ICMEnabled"
                 min="0"
                 :max="MAX_AMOUNT"
               />
@@ -55,7 +55,7 @@
                     ? 'input-error'
                     : '')
                 "
-                :disabled="hasEdit"
+                :disabled="hasEdit || ICMEnabled"
                 min="0"
                 max="100"
                 step="0.5"
@@ -74,7 +74,7 @@
                     ? 'input-error'
                     : '')
                 "
-                :disabled="hasEdit"
+                :disabled="hasEdit || ICMEnabled"
                 min="0"
                 :max="3 * MAX_AMOUNT"
               />
@@ -789,6 +789,8 @@ const config = useConfigStore();
 
 const isEditMode = ref(false);
 
+const ICMEnabled = computed(() => store.isICMEnabled);
+
 const hasEdit = computed(
   () => config.addedLines.length > 0 || config.removedLines.length > 0
 );
@@ -1014,9 +1016,14 @@ const dbValue = computed(
 const loadConfig = (value: unknown) => {
   const configValue = value as ConfigValue;
   config.startingPot = Number(configValue.startingPot);
-  config.effectiveStack = Number(configValue.effectiveStack);
-  config.rakePercent = Number(configValue.rakePercent);
-  config.rakeCap = Number(configValue.rakeCap);
+
+  if (!store.isICMEnabled)
+  {
+    config.effectiveStack = Number(configValue.effectiveStack);
+    config.rakePercent = Number(configValue.rakePercent);
+    config.rakeCap = Number(configValue.rakeCap);
+  }
+
   config.donkOption = Boolean(configValue.donkOption);
   config.addAllInThreshold = Number(configValue.addAllInThreshold);
   config.forceAllInThreshold = Number(configValue.forceAllInThreshold);

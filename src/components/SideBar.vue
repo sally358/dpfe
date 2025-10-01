@@ -39,15 +39,19 @@
       Tree Configuration
     </button>
 
+    <button :class="itemStyle('icm')" @click="store.sideView = 'icm'">
+      ICM
+    </button>
+
     <button :class="itemStyle('bunching')" @click="store.sideView = 'bunching'">
-      Bunching Effect
+      Bunching effect
     </button>
 
     <button
       :class="itemStyle('run-solver')"
       @click="store.sideView = 'run-solver'"
     >
-      Run Solver
+      <b>Run Solver</b>
     </button>
 
     <button :class="itemStyle('about')" @click="store.sideView = 'about'">

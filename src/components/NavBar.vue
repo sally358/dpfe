@@ -6,7 +6,7 @@
       <div class="flex items-center z-10">
         <div class="px-4">
           <span class="text-lg font-semibold">DP: Foldem Edition</span>
-          <span class="pl-2 font-semibold text-gray-400">v0.1.0</span>
+          <span class="pl-2 font-semibold text-gray-400">v0.2.0</span>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
           :class="
             'flex relative w-32 items-center justify-center font-semibold ' +
             'transition-colors hover:bg-slate-700 hover:text-blue-200 ' +
-            (store.navView === 'results' ? 'bg-slate-700 text-blue-200' : '')
+            (store.navView === 'export' ? 'bg-slate-700 text-blue-200' : '')
           "
           @click="store.navView = 'export'"
         >

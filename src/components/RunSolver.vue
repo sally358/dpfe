@@ -560,6 +560,13 @@ const buildTree = async () => {
     tmpConfig.board,
     tmpConfig.startingPot,
     tmpConfig.effectiveStack,
+
+    store.isICMEnabled,
+    store.icmOOPStack,
+    store.icmIPStack,
+    store.icmPayouts,
+    store.icmStacks,
+    
     tmpConfig.rakePercent / 100,
     tmpConfig.rakeCap,
     tmpConfig.donkOption,

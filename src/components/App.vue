@@ -36,6 +36,9 @@
         <div v-show="store.sideView === 'tree-config'">
           <TreeConfig />
         </div>
+        <div v-show="store.sideView === 'icm'">
+          <ICM />
+        </div>
         <div v-show="store.sideView === 'bunching'">
           <BunchingEffect />
         </div>
@@ -73,6 +76,7 @@ import SideBar from "./SideBar.vue";
 import RangeEditor from "./RangeEditor.vue";
 import BoardSelector from "./BoardSelector.vue";
 import TreeConfig from "./TreeConfig.vue";
+import ICM from "./ICM.vue";
 import BunchingEffect from "./BunchingEffect.vue";
 import RunSolver from "./RunSolver.vue";
 import AboutPage from "./AboutPage.vue";
@@ -80,6 +84,7 @@ import ResultViewer from "./ResultViewer.vue";
 import ExportPage from "./ExportPage.vue";
 
 const store = useStore();
+console.log(store.sideView)
 const header = computed(() => store.headers[store.sideView].join(" > "));
 
 const clientHeight = ref(0);
