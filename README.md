@@ -5,7 +5,7 @@ but the probability that i can be bothered to do that is around 0.0000001%
 
 added sally features:
 * strategy breakdown by hand types
-* drill exporter (i'll probably make it better one day for more customization)
+* drill exporter (i'll probably make it better one day for more customization and less ugly ui)
 
 ongoing updates:
 * icm support
