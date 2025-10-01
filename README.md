@@ -5,7 +5,7 @@ added sally features:
 * strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
 * drill exporter (i'll probably make it better one day for more customization and less ugly ui)
 
-ongoing updates:
+in development:
 * icm support
 
 # IMPORTANT NOTES:
