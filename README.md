@@ -9,14 +9,14 @@ in development:
 * nothing. I'm on my well deserved vacation
 
 planned features:
-* idk. if i'll get inspiration maybe i'll come up with something. nodelocking maybe, though it's kinda meh, who uses nodelocking unironically anyways lol
-
-on the drill stuff: i use my personal crappy drill replayer to play drills which is far too bad to get uploaded, maybe i'll make a normal drill replayer later 
-but the probability that i can be bothered to do that is around 0.0000001%
+* drills 2.0. I think I'll start working on cooler open-source tauri-based drill player and I'll remake the drill system for it to also include ICM and general frequency info and maybe even some heavy deviation SURPRISE QUESTIONS!
+* nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already there
+* exporting
+* blocker info
+Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Who knows.
 
 
 # IMPORTANT NOTES:
-* Imagine that the "blockers" tab does not exist
 * DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 * If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
 * DO NOT trust the "ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps". This warning is a LIE. I added caching. Make payout structure as big as you want. (The higher exploitability part is true tho)
