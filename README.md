@@ -14,7 +14,7 @@ planned features:
 * exporting
 * blocker info
 
-Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Who knows.
+Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
 
 # IMPORTANT NOTES:
