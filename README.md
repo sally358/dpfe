@@ -13,6 +13,7 @@ planned features:
 * nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already there
 * exporting
 * blocker info
+
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Who knows.
 
 
