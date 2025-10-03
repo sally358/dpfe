@@ -6,10 +6,9 @@ added sally features:
 * icm support (seems to work well, but I'm still not sure)
 
 in development:
-* nothing. I'm on my well deserved vacation
+* drills 2.0. I'm currently working on cooler open-source tauri-based drill player and I'll remake the drill system for compatibility and more flexibility.
 
 planned features:
-* drills 2.0. I think I'll start working on cooler open-source tauri-based drill player and I'll remake the drill system for it to also include ICM and general frequency info and maybe even some heavy deviation SURPRISE QUESTIONS! Also the menu needs better design FAST.
 * nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already there
 * exporting
 * blocker info
