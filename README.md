@@ -2,7 +2,7 @@ desktop postflop foldem edition. yeah, you have to compile it to use it.
 
 added sally features:
 * strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
-* drill exporter (i'll probably make it better one day for more customization and less ugly ui)
+* drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
 * icm support (seems to work well, but I'm still not sure)
 
 in development:
