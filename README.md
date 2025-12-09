@@ -9,7 +9,8 @@ in development:
 * drills 2.0. I'm currently working on cooler open-source tauri-based drill player and I'll remake the drill system for compatibility and more flexibility.
 
 planned features:
-* nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already there
+* PKO stuff
+* nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already half way there
 * exporting
 * blocker info
 
