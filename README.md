@@ -6,13 +6,15 @@ added sally features:
 * icm support (seems to work well, but I'm still not sure)
 
 in development:
-* drills 2.0. I'm currently working on cooler open-source tauri-based drill player and I'll remake the drill system for compatibility and more flexibility.
+* nodelocking and rulelocking
 
 planned features:
 * PKO stuff
 * nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already half way there
 * exporting
 * blocker info
+* mega drills. drill exports works, but we may or may not want to add a built-in driller.
+
 
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
