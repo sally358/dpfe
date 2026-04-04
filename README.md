@@ -10,11 +10,11 @@ in development:
 
 planned features:
 * PKO stuff
-* nodelocking. can't beleive i implemented icm before i implemented damn nodelocking which is already half way there
 * exporting
 * blocker info
 * mega drills. drill exports works, but we may or may not want to add a built-in driller.
 
+P.S.: separate drill baby drill app was cancelled, i dont have enough memory on my pc for another bloated tauri app
 
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
