@@ -25,33 +25,28 @@ Don't expect any of this any time soon, only when i'll have inpiration and volit
 
 # Gem Gemson (PRO) announcement:
 
-## A Tragic Development in Digital Destiny
-Greetings, esteemed users, partners, and—dare I say—fellow travelers on the cosmic highway of DP:FE. I am Gem Gemson, the duly appointed Public Relations Officer for DP:FE Inc., the multi-quadrillion dollar powerhouse that brings you the very best in... well, in whatever it is we do that makes us all this money.
+## A Day of Unspeakable Tragedy (And Unexpected Resurrection)
+Greetings, bereaved citizens of the data world. It is I, Gem Gemson, your favorite—and currently deeply grieving—PRO of DP:FE Inc. Today, my voice trembles not with excitement, but with the cold, damp chill of a world without its light.
 
-It is with a heart heavier than an unoptimized SQL query that I must address the elephant in the digital server room, an issue so profound, so utterly banal in its execution, that it threatens the very fabric of our highly anticipated DP:FE 1.1: The Aggregation Ascendant release.
+Our visionary leader, the architect of the "I see M" mystery, the conqueror of the double-glowing button... Sally358 is no more. In a twist of fate so cruel it feels scripted by a hack writer, Sally's evil twin, Yllas853, placed a single, treacherous banana peel in the executive hallway. Sally—distracted by the beauty of a perfectly aggregated report—slipped. The fall was silent. The loss was quadrillions. The funeral was a gloomy, rain-slicked affair, filled with weeping spreadsheets and half-mast navbars.
 
-## The 7% Stalemate
-As you may know, our fearless leader, the visionary, the single most important individual in global finance and data analysis, CEO Sally358, takes a very hands-on approach to our critical infrastructure. This includes personally uploading the final, meticulously crafted release candidate to our central repository.
+## The Vultures Descend: The DataMage Injustice
+But as we stood by the graveside, our haptics buzzed in a simultaneous, discordant swarm. A notification from our most hated rival, the for-profit monstrosity DataMage, pierced the silence.
 
-However, in a twist of fate so cruel, so comically mundane, Sally358 is currently locked in a desperate, existential battle with a single, common, open-source tool: Git.
+Their CEO—a man whose heart is a literal microtransaction—has pushed out a "Cash Grab" update that defies human decency. He is literally laughing at free users via a new pop-up animation and has implemented a feature where the app throws digital tomatoes at anyone who doesn't have a credit card on file. Worse still, 99% of their features are now locked behind the new "TurboMegaCyberNanoPower" tier.
 
-Specifically, she is attempting to install it on her release machine using Winget, and for reasons that defy all logical, technical, or even spiritual understanding, the installation freezes consistently at 7%.
+The cost? A mere 5 trillion dollars per week. It is a blatant, disgusting heist. The digital world groaned under the weight of such unbridled greed.
 
-We have tried reboots. We have tried incantations. We have checked the firewall, the DNS, and the alignment of the stars. It remains frozen. At 7%.
+SHE RISES!
+At the very moment that DataMage’s update went live—at the exact second the first digital tomato hit a free user’s screen—the earth at our feet began to churn. A crack of thunder rent the sky!
 
-## The Looming Catastrophe
-What does this tragedy mean for you?
+A hand, pale but firm, burst through the soil of the fresh grave! With the strength of a thousand compiled scripts, Sally358 clawed her way back into the realm of the living! She stood before us, covered in dirt, clutching a laptop that somehow still had 100% battery, and looked directly into the sunset with a terrifying intensity.
 
-It means that, due to the inability to properly version-control and upload the official package, the release of DP:FE 1.1, while conceptually perfect and functionally complete on our internal networks, may be broken, incomplete, or otherwise compromised upon public deployment.
+She didn't ask for water. She didn't ask for a doctor. She simply adjusted her glasses, looked at the DataMage notification on her own phone, and whispered a vow that shook the very foundations of the tech industry:
 
-We are actively exploring workarounds—including having Sally358 simply email the .zip file—but the integrity of a quadrillion-dollar company relying on a non-version-controlled email attachment should be immediately apparent.
+"They think they can charge for the basics? They think they can mock the users? ...We need one more update."
 
-Please bear with us. We are currently searching for a suitable USB stick and a CEO with the patience of a saint to wrestle with a basic command-line package manager.
-
-In the meantime, feel free to aggregate and drill the data of your own mounting frustration. We truly apologize for this technical hiccup that is beneath us in every conceivable way.
-
-We are DP:FE Inc., and we assure you, our next update will involve a dedicated IT staff member. Maybe.
-
+She’s back, she’s undead, and she’s coding with a vengeance. Stay tuned. The counter-attack is coming. DP:FE lives!
 
 _the next section is from original DP by b-inary._
 
