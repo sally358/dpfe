@@ -7,6 +7,7 @@ export type SideView =
   | "oop-range"
   | "ip-range"
   | "board"
+  | "node-locking"
   | "icm"
   | "tree-config"
   | "bunching"
@@ -92,12 +93,24 @@ export const useStore = defineStore("app", {
       board: ["Board"],
       "tree-config": ["Tree Configuration"],
       bunching: ["Bunching Effect"],
+      "node-locking": ["Tree & Nodes"],
       "icm": ["ICM"],
       "run-solver": ["Run Solver"],
     },
     ranges: Array.from({ length: 6 }, () =>
       Array.from({ length: 13 * 13 }, () => 0)
     ),
+
+    nodelockRanges: [] as [number, number[], number[]][],
+    // format: [nodeIndex, range (length 169), limitation ranges (-1 - this or less, 0 - strict, 1 - this or more)]
+    nodelockRules: [] as [number, [number, number, number?], number, number, number][],
+    // format: [nodeIndex, [criteriumGroup, criterium, specification (if applicable)], percentage, limitation (-1 - this or less, 0 - strict, 1 - this or more), priority (less than 0 - before range locking, more than 0 - after range locking, 0 - error lmao; higher priority overrides lower priority)]
+    
+    currentLimitRange: Array.from({ length: 13 * 13 }, () => 1),
+    isNodelockReloadQueued: false,
+    isTreeSetup: false,
+    isBoardError: false, // yeah we are putting this in the global store sue me
+
     isBunchingEnabled: false,
     isBunchingRunning: false,
     bunchingFlop: [] as number[],
@@ -113,6 +126,8 @@ export const useStore = defineStore("app", {
     isSolverFinished: false,
     isSolverError: false,
     isFinalizing: false,
+
+    isExporting: false
   }),
 
   getters: {
@@ -124,7 +139,7 @@ export const useStore = defineStore("app", {
         state.isSolverError ||
         state.isFinalizing
       );
-    },
+    }
   },
 });
 
