@@ -20,8 +20,8 @@
               <div
                 class="absolute w-full h-full left-0 top-0 bg-bottom bg-no-repeat"
                 :style="{
-                  'background-image': `linear-gradient(${yellow500} 0% 100%)`,
-                  'background-size': `100% ${cellValue(row, col)}%`,
+                  'background-image': styleParser(row, col)[0],
+                  'background-size': styleParser(row, col)[1]
                 }"
               ></div>
             </div>
@@ -59,8 +59,18 @@
             @change="onRangeTextChange"
           />
 
+          <select
+            v-if="player == 2"
+            v-model="currentLimit"
+            class="w-24 px-2 py-1 rounded-lg text-sm"
+          >
+            <option :value="0">Strict</option>
+            <option :value="-1">This or less</option>
+            <option :value="1">This or more</option>
+          </select>
+
           <button
-            v-if="player >= 2"
+            v-if="player >= 3"
             class="mr-4 button-base button-blue"
             @click="invertRange"
           >
@@ -143,6 +153,14 @@ import * as invokes from "../invokes";
 import DbItemPicker from "./DbItemPicker.vue";
 
 const yellow500 = "#eab308";
+const green500 = "#22c55e";
+const red500 = "#ef4444";
+
+const colorPack: string[] = [] 
+
+colorPack[1] = green500
+colorPack[0] = yellow500
+colorPack[-1] = red500
 
 type DraggingMode = "none" | "enabling" | "disabling";
 
@@ -161,6 +179,7 @@ const rangeText = ref(props.defaultText);
 const rangeTextError = ref("");
 const weight = ref(100);
 const numCombos = ref(0);
+const currentLimit = ref(0);
 
 let draggingMode: DraggingMode = "none";
 
@@ -178,6 +197,10 @@ const cellValue = (row: number, col: number) => {
   return store.ranges[props.player][cellIndex(row, col)];
 };
 
+const cellLimit = (row: number, col: number) => {
+  return store.currentLimitRange[cellIndex(row, col)];
+};
+
 const onUpdate = async () => {
   rangeText.value = await invokes.rangeToString(props.player);
   numCombos.value = await invokes.rangeNumCombos(props.player);
@@ -187,7 +210,28 @@ const onUpdate = async () => {
 const update = async (row: number, col: number, weight: number) => {
   const idx = 13 * (row - 1) + col - 1;
   await invokes.rangeUpdate(props.player, row, col, weight / 100);
-  store.ranges[props.player][idx] = weight;
+
+  if(currentLimit.value == -1 && weight == 0)
+  {
+    store.ranges[props.player][idx] = 0;
+    store.currentLimitRange[idx] = 0;
+  }
+  else if(currentLimit.value == -1 && weight == 100)
+  {
+    store.ranges[props.player][idx] = 0;
+    store.currentLimitRange[idx] = 1;
+  }
+  else if(currentLimit.value == 1 && weight == 100)
+  {
+    store.ranges[props.player][idx] = 100;
+    store.currentLimitRange[idx] = 0;
+  }
+  else
+  {
+    store.ranges[props.player][idx] = weight;
+    store.currentLimitRange[idx] = currentLimit.value;
+  }
+
   await onUpdate();
 };
 
@@ -224,7 +268,7 @@ const onRangeTextChange = async () => {
 const dragStart = (row: number, col: number) => {
   const idx = 13 * (row - 1) + col - 1;
 
-  if (store.ranges[props.player][idx] !== weight.value) {
+  if (store.ranges[props.player][idx] !== weight.value || store.currentLimitRange[idx] !== currentLimit.value) {
     draggingMode = "enabling";
     update(row, col, weight.value);
   } else {
@@ -249,6 +293,8 @@ const onWeightChange = () => {
   weight.value = Math.round(Math.max(0, Math.min(100, weight.value)));
 };
 
+let flibbidyFlop = false
+
 const clearRange = async () => {
   await invokes.rangeClear(props.player);
   store.ranges[props.player].fill(0);
@@ -256,6 +302,17 @@ const clearRange = async () => {
   rangeTextError.value = "";
   weight.value = 100;
   numCombos.value = 0;
+
+  if(props.player == 2)
+  {  
+    if (flibbidyFlop)
+      store.currentLimitRange.fill(1);
+    else
+      store.currentLimitRange.fill(0);
+    
+    flibbidyFlop = !flibbidyFlop;
+  }
+  
 };
 
 const invertRange = async () => {
@@ -270,4 +327,39 @@ const loadRange = (rangeStr: unknown) => {
   rangeText.value = String(rangeStr);
   onRangeTextChange();
 };
+
+const styleParserNodelock = (row: number, col: number) => {
+  const weight = cellValue(row, col);
+  const limit = cellLimit(row, col);
+
+  if (limit != 1) 
+  {
+    if (weight == 0)
+      if (col == row)
+        return ["linear-gradient(#270067 0% 100%)", "100% 100%"];
+      else
+        return ["linear-gradient(#270047 0% 100%)", "100% 100%"];
+    else
+      if (col == row)
+        return ["linear-gradient(#270067 0% " + (100 - weight) + "%, " + colorPack[limit] + " " + (100 - weight) + "% 100%)", "100% 100%"];
+      else
+        return ["linear-gradient(#270047 0% " + (100 - weight) + "%, " + colorPack[limit] + " " + (100 - weight) + "% 100%)", "100% 100%"];
+  }
+  else
+    return ["linear-gradient(" + colorPack[limit] + " 0% 100%)", "100% " + weight + "%"];
+}
+
+const styleParserNormal = (row: number, col: number) => {
+  const weight = cellValue(row, col);
+  return ["linear-gradient(" + colorPack[0] + " 0% 100%)", "100% " + weight + "%"];
+}
+
+let styleParser: (row: number, col: number) => string[];
+
+if (props.player === 2) {
+  styleParser = styleParserNodelock;
+} else {
+  styleParser = styleParserNormal;
+}
+
 </script>
