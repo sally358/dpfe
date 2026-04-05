@@ -26,6 +26,16 @@ The general frame in which selected window is displayed
     }}
   </div>
 
+  <div
+    v-else-if="store.isExporting"
+    class="flex w-full max-w-screen-xl mx-auto px-4 py-6 items-center"
+  >
+    <span
+      class="spinner inline-block mr-3"
+    ></span>
+    Exporting...
+  </div>
+
   <div v-else class="flex flex-col h-full">
     <ResultNav
       :is-handler-updated="isHandlerUpdated"
