@@ -309,3 +309,10 @@ pub fn tree_delete_removed_line(tree_state: tauri::State<Mutex<ActionTree>>, lin
         .collect::<Vec<_>>();
     tree.add_line(&line).unwrap();
 }
+
+#[tauri::command]
+pub fn tree_push_range_lock(tree_state: tauri::State<Mutex<ActionTree>>, lock_range: [f32; 13 * 13], lock_limit: [i8; 13 * 13]) 
+{
+    let mut tree = tree_state.lock().unwrap();
+    tree.push_range_lock_on_current_node(lock_range, lock_limit).unwrap();
+}
