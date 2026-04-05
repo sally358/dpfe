@@ -275,8 +275,8 @@
                 }}%)
           </div>
           <div class="flex mt-3 w-full justify-center gap-3">
-            <button class="button-base button-blue" @click="applyRange()">
-              Apply
+            <button class="button-base button-blue" @click="pushRange()">
+              Push range
             </button>
           </div>
         </div>
@@ -1056,8 +1056,9 @@ const onRangeTextChange = async () => {
   }
 };
 
-const applyRange = async () => {
-  store.nodelockRanges.push([currentSpot.value, store.ranges[2], store.currentLimitRange])
+
+const pushRange = async () => {
+  invokes.treePushRangeLock(store.ranges[2], store.currentLimitRange);
 };
 
 
