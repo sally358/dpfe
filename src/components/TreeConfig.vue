@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isEditMode">
+  <div>
     <div class="flex">
       <div class="shrink-0">
         <div class="flex my-1 gap-8">
@@ -616,9 +616,9 @@
               <button
                 class="button-base button-blue"
                 :disabled="!isInputValid"
-                @click="startEdit"
+                @click="setupTree"
               >
-                Preview & Edit Tree
+                Setup tree
               </button>
 
               <button
@@ -727,17 +727,6 @@
       </div>
     </div>
   </div>
-
-  <div v-else>
-    <Suspense>
-      <template #default>
-        <TreeEditor @save="saveEdit" @cancel="cancelEdit" />
-      </template>
-      <template #fallback>
-        <div>Loading...</div>
-      </template>
-    </Suspense>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -786,6 +775,10 @@ type ConfigValue = {
 
 const store = useStore();
 const config = useConfigStore();
+
+const emit = defineEmits<{
+  (e: "setupTree"): void;
+}>();
 
 const isEditMode = ref(false);
 
@@ -925,6 +918,9 @@ const errorLines = computed(() => {
   ) {
     errors.push("Invalid configurations (loaded broken configurations?)");
   }
+  if (store.isBoardError) {
+    errors.push("Board must contain at least 3 cards in order to be set up.");
+  }
   return errors;
 });
 
@@ -1056,12 +1052,22 @@ const loadConfig = (value: unknown) => {
   }
 };
 
-const startEdit = () => {
-  isEditMode.value = true;
-  if (config.expectedBoardLength === 0) {
-    config.expectedBoardLength = Math.max(config.board.length, 3);
+const setupTree = () => {
+  // the old lumberjack was actually executed, here is a new one
+  
+  if (config.board.length < 3) {
+    store.isBoardError = true;
+    store.isTreeSetup = false;
+    return;
   }
-  store.headers["tree-config"].push("Tree Preview & Edit");
+
+  emit("setupTree");
+
+  store.isTreeSetup = true;
+
+  store.nodelockRanges = [];
+  store.nodelockRules = [];
+  store.currentLimitRange = Array.from({ length: 13 * 13 }, () => 1);
 };
 
 const clearEdit = () => {
@@ -1074,9 +1080,11 @@ const saveEdit = (addedLines: string, removedLines: string) => {
   isEditMode.value = false;
   config.addedLines = addedLines;
   config.removedLines = removedLines;
+
   if (config.addedLines === "" && config.removedLines === "") {
     config.expectedBoardLength = 0;
   }
+
   store.headers["tree-config"].pop();
 };
 
