@@ -39,11 +39,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useConfigStore } from "../store";
+import { useStore, useConfigStore } from "../store";
 import { cardText, parseCardString } from "../utils";
 import BoardSelectorCard from "./BoardSelectorCard.vue";
 
 const config = useConfigStore();
+const store = useStore();
 const boardText = ref("");
 
 const toggleCard = (cardId: number, updateText = true) => {
@@ -54,6 +55,10 @@ const toggleCard = (cardId: number, updateText = true) => {
     if (config.board.length <= 3) {
       config.board.sort((a, b) => b - a);
     }
+  }
+
+  if (store.isBoardError) {
+    store.isBoardError = false;
   }
 
   if (updateText) {
@@ -97,6 +102,10 @@ const generateRandomBoard = () => {
     if (!config.board.includes(randomCard)) {
       config.board.push(randomCard);
     }
+  }
+  
+  if (store.isBoardError) {
+    store.isBoardError = false;
   }
 
   config.board.sort((a, b) => b - a);
