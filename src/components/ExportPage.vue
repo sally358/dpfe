@@ -20,58 +20,131 @@
     }}
   </div>
 
-  <div v-else>
-    <div>
-      Drill name:
-      <input
-        v-model="drillName"
-        type="text"
-        class="w-64 ml-2 px-2 py-1 rounded-lg text-sm"
-      />
+  <div v-else class="mx-3">
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        
+      </div>
+
+      <div class="text-xl font-semibold my-5 ml-2">
+        Export drills
+      </div>
+    </div>  
+
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        Drill name:
+      </div>
+
+      <div class="flex-row">
+        <input
+          v-model="drillName"
+          type="text"
+          class="w-64 ml-2 px-2 py-1 rounded-lg text-sm"
+        />
+      </div>
     </div>
 
-    <div>
-      Comment:
-      <textarea
-        v-model="drillComment"
-        class="w-64 ml-2 mb-4 px-2 py-1 rounded-lg text-sm"
-      >
-      </textarea>
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        Comment:
+      </div>
+
+      <div class="flex-row">
+        <textarea
+          v-model="drillComment"
+          class="w-64 ml-2 mb-4 px-2 py-1 rounded-lg text-sm"
+        >
+        </textarea>
+      </div>
     </div>
 
-    <div>
-      OOP name:
-      <input
-        v-model="OOPname"
-        type="text"
-        class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
-      />
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        OOP name:
+      </div>
+
+      <div class="flex-row">
+        <input
+          v-model="OOPname"
+          type="text"
+          class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
+        />
+      </div>
     </div>
 
-    <div>
-      IP name:
-      <input
-        v-model="IPname"
-        type="text"
-        class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
-      />
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        IP name:
+      </div>
+
+      <div class="flex-row">
+        <input
+          v-model="IPname"
+          type="text"
+          class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
+        />
+      </div>
     </div>
 
-    <div>
-      Drill number:
-      <input
-        v-model="drillNumber"
-        type="number"
-        class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
-      />
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        Hero:
+      </div>
+
+      <div class="flex-row">
+        <select
+          v-model="exportFor"
+          class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
+        >
+          <option value="0">Any</option>
+          <option value="1">Only OOP</option>
+          <option value="-1">Only IP</option>
+        </select>
+      </div>
     </div>
 
-    <button
-      class="ml-3 button-base button-blue"
-      @click="createDrills"
-    >
-      Create drills
-    </button>
+
+
+    <div class="my-1 flex">
+      <div class="flex-row w-24">
+        Drill number:
+      </div>
+
+      <div class="flex-row">
+        <input
+          v-model="drillNumber"
+          type="number"
+          class="w-20 ml-2 px-2 py-1 rounded-lg text-sm text-center"
+        />
+      </div>
+    </div>
+
+    <div class="my-5 flex">
+      <div class="flex-row w-24">
+        
+      </div>
+
+      <div class="flex-row">
+        <button
+          class="button-base button-blue ml-2"
+          @click="createDrills"
+          :disabled="store.isExporting"
+        >
+          Create drills
+        </button>
+      </div>
+
+      <div
+          v-if="store.isExporting"
+          class="flex-row"
+        >
+        <span
+          class="spinner inline-block mr-3"
+        ></span>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -125,6 +198,7 @@ import {
 const store = useStore();
 const config = useSavedConfigStore();
 
+const exportFor = ref(0);
 
 // COLOR STUFF
 
@@ -187,6 +261,8 @@ const actionColor = (
 
 const createDrills = async () =>
 {
+  store.isExporting = true;
+
   const drillPack = new DrillPack(drillName, drillComment);
 
   const cardsResult: number[][] = await invokes.gamePrivateCards();
@@ -200,7 +276,14 @@ const createDrills = async () =>
   {
     invokes.gameApplyHistory([]);
 
-    const isOOPHero = generateRandomBool();
+    let isOOPHero: boolean;
+
+    if(exportFor.value === 0)
+      isOOPHero = generateRandomBool();
+    else if(exportFor.value == 1)
+      isOOPHero = true;
+    else
+      isOOPHero = false;
 
     const hero = isOOPHero ? "oop" : "ip";
     const villain = isOOPHero ? "ip" : "oop";
@@ -519,7 +602,9 @@ const createDrills = async () =>
   const link = document.createElement("a");
   link.download = "drillPack.json";
   link.href = window.URL.createObjectURL(blob);
-  link.click()
+  link.click();
+
+  store.isExporting = false;
   
 }
 
