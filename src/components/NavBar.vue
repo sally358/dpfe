@@ -6,7 +6,7 @@
       <div class="flex items-center z-10">
         <div class="px-4">
           <span class="text-lg font-semibold">DP: Foldem Edition</span>
-          <span class="pl-2 font-semibold text-gray-400">v0.2.0</span>
+          <span class="pl-2 font-semibold text-gray-400">v0.3.0</span>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
           "
           @click="store.navView = 'export'"
         >
-          <ChartBarIcon class="w-6 h-6" />
+          <ArchiveBoxIcon class="w-6 h-6" />
           <span class="pl-3">Export</span>
         </button>
 
@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { useStore } from "../store";
-import { ComputerDesktopIcon, ChartBarIcon } from "@heroicons/vue/24/solid";
+import { ComputerDesktopIcon, ChartBarIcon, ArchiveBoxIcon } from "@heroicons/vue/24/solid";
 
 const store = useStore();
 </script>
