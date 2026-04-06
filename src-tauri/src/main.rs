@@ -51,6 +51,8 @@ fn main() {
             tree_remove_current_node,
             tree_delete_added_line,
             tree_delete_removed_line,
+            tree_push_range_lock,
+            tree_pull_range_lock,
             bunching_init,
             bunching_clear,
             bunching_progress,
