@@ -157,10 +157,6 @@ export const treeRemoveCurrentNode = async () => {
   await invoke("tree_remove_current_node");
 };
 
-export const treePushRangeLock = async (lockRange: number[], lockLimit: number[]) => {
-  await invoke("tree_push_range_lock", { lockRange, lockLimit } );
-}
-
 export const treeDeleteAddedLine = async (line: string) => {
   await invoke("tree_delete_added_line", { line });
 };
@@ -168,6 +164,18 @@ export const treeDeleteAddedLine = async (line: string) => {
 export const treeDeleteRemovedLine = async (line: string) => {
   await invoke("tree_delete_removed_line", { line });
 };
+
+/* Nodelocking */
+
+export const treePushRangeLock = async (lockRange: number[], lockLimit: number[]) => 
+{
+  await invoke("tree_push_range_lock", { lockRange, lockLimit } );
+}
+
+export const treePullRangeLock = async (): Promise<[number[] | null, number[] | null]> =>
+{
+  return await invoke("tree_pull_range_lock");
+}
 
 /* Bunching effect */
 
