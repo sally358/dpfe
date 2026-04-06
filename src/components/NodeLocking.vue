@@ -83,7 +83,7 @@
               ? 'border-blue-600 cursor-default'
               : 'border-gray-400 cursor-pointer')
           "
-          @click="selectSpot(spot.index, false, false, true)"
+          @click="comboSelect(spot.index, false, false, true)"
         >
           <!-- Root or Chance -->
           <template v-if="spot.type === 'root' || spot.type === 'chance'">
@@ -275,7 +275,7 @@
                 }}%)
           </div>
           <div class="flex mt-3 w-full justify-center gap-3">
-            <button class="button-base button-blue" @click="pushRange()">
+            <button class="button-base button-blue" @click="pushRange">
               Push range
             </button>
           </div>
@@ -588,8 +588,6 @@ const emit = defineEmits<{
   (event: "cancel"): void;
 }>();
 
-const nodeLocation = ref([] as number[]);
-
 const navDiv = ref(null as HTMLDivElement | null);
 
 const config = useConfigStore();
@@ -704,6 +702,18 @@ const encodeLine = (spotIndex: number) => {
   return ret;
 };
 
+const comboSelect = async (
+  spotIndex: number,
+  needSplice: boolean,
+  needRebuild: boolean,
+  needAmountUpdate: boolean
+) => {
+  selectSpot(spotIndex, needSplice, needRebuild, needAmountUpdate)
+  
+  if (spotIndex != 0 && spotIndex != 1)
+    await updateActions()
+}
+
 const selectSpot = async (
   spotIndex: number,
   needSplice: boolean,
@@ -801,7 +811,6 @@ const selectSpot = async (
   isLocked = false;
   autoScrollNav();
 
-  await updateActions()
 };
 
 const autoScrollNav = async () => {
@@ -914,13 +923,13 @@ const play = async (spotIndex: number, actionIndex: number) => {
   spot.actions[actionIndex].isSelected = true;
   spot.selectedIndex = actionIndex;
 
-  await selectSpot(spotIndex + 1, true, false, true);
+  await comboSelect(spotIndex + 1, true, false, true);
 };
 
 const addBetAction = async () => {
   const isRaise = totalBetAmount.value[0] !== totalBetAmount.value[1];
   await invokes.treeAddBetAction(betAmount.value, isRaise);
-  await selectSpot(selectedSpotIndex.value, false, true, false);
+  await comboSelect(selectedSpotIndex.value, false, true, false);
   addedLines.value = await invokes.treeAddedLines();
   removedLines.value = await invokes.treeRemovedLines();
   invalidLines.value = await invokes.treeInvalidTerminals();
@@ -930,7 +939,7 @@ const removeSelectedNode = async () => {
   await invokes.treeRemoveCurrentNode();
   let prevIndex = selectedSpotIndex.value - 1;
   if (spots.value[prevIndex].type === "chance") --prevIndex;
-  await selectSpot(prevIndex, false, true, true);
+  await comboSelect(prevIndex, false, true, true);
   addedLines.value = await invokes.treeAddedLines();
   removedLines.value = await invokes.treeRemovedLines();
   invalidLines.value = await invokes.treeInvalidTerminals();
@@ -949,7 +958,7 @@ const deleteAddedLine = async (index: number) => {
   const line = addedLinesArray[index];
 
   await invokes.treeDeleteAddedLine(line);
-  await selectSpot(selectedSpotIndex.value, false, true, false);
+  await comboSelect(selectedSpotIndex.value, false, true, false);
 
   addedLines.value = await invokes.treeAddedLines();
   removedLines.value = await invokes.treeRemovedLines();
@@ -961,7 +970,7 @@ const deleteRemovedLine = async (index: number) => {
   const line = removedLinesArray[index];
 
   await invokes.treeDeleteRemovedLine(line);
-  await selectSpot(selectedSpotIndex.value, false, true, false);
+  await comboSelect(selectedSpotIndex.value, false, true, false);
 
   addedLines.value = await invokes.treeAddedLines();
   removedLines.value = await invokes.treeRemovedLines();
