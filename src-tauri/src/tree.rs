@@ -217,7 +217,6 @@ pub fn tree_invalid_terminals(tree_state: tauri::State<Mutex<ActionTree>>) -> St
 pub fn tree_actions(tree_state: tauri::State<Mutex<ActionTree>>) -> Vec<String> {
     let tree = tree_state.lock().unwrap();
     tree.available_actions()
-        .unpackage_all()
         .iter()
         .cloned()
         .map(action_to_string)
@@ -256,7 +255,7 @@ pub fn tree_apply_history(tree_state: tauri::State<Mutex<ActionTree>>, line: Vec
 pub fn tree_play(tree_state: tauri::State<Mutex<ActionTree>>, action: String) -> i32 {
     let mut tree = tree_state.lock().unwrap();
     let action = decode_action(&action);
-    let available_actions = tree.available_actions().unpackage_all();
+    let available_actions = tree.available_actions();
     if let Some(index) = available_actions.iter().position(|&a| a == action) {
         tree.play(action).unwrap();
         index as i32
@@ -309,19 +308,4 @@ pub fn tree_delete_removed_line(tree_state: tauri::State<Mutex<ActionTree>>, lin
         .map(decode_action)
         .collect::<Vec<_>>();
     tree.add_line(&line).unwrap();
-}
-
-#[tauri::command]
-pub fn tree_push_range_lock(tree_state: tauri::State<Mutex<ActionTree>>, lock_range: Vec<f32>, lock_limit: Vec<i8>) 
-{
-    let mut tree = tree_state.lock().unwrap();
-    tree.push_range_lock_on_current_node(lock_range, lock_limit).unwrap();
-}
-
-
-#[tauri::command]
-pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Option<Vec<f32>>, Option<Vec<i8>>)
-{
-    let mut tree = tree_state.lock().unwrap();
-    tree.pull_range_lock_from_current_node()
 }
