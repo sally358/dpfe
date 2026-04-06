@@ -352,9 +352,9 @@
 
           <div class="flex">
             <div class="flex-row w-1/6">
-              <select v-model="currentGroup" 
+              <select v-model.number="currentGroup" 
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm"
-              @change="onGroupChange()">
+              @change="onGroupChange">
                 <option :value="0">Hand group</option>
                 <option :value="1">Made hands (strict)</option>
                 <option :value="2">Made hands (or better)</option>
@@ -364,9 +364,9 @@
             </div>
             <div class="flex-row w-1/6">
               <select 
-              v-model="currentCriterium" 
+              v-model.number="currentCriterium" 
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm"
-              @change="onCriteriumChange()">
+              @change="onCriteriumChange">
                 <option v-if="currentGroup === 0" :value="0">Any hand</option>
                 <option v-if="currentGroup === 0" :value="1">Pocket pair</option>
                 <option v-if="currentGroup === 0" :value="2">Suited</option>
@@ -390,14 +390,15 @@
                 
 
                 <option v-if="currentGroup === 4" :value="0">Dry board</option>
-
+                <hr v-if="currentGroup === 4">
                 <option v-if="currentGroup === 4" :value="11">Paired board</option>
                 <option v-if="currentGroup === 4" :value="12">Trip board</option>
-
+                <option v-if="currentGroup === 4" :value="13">Quad board</option>
+                <hr v-if="currentGroup === 4">
                 <option v-if="currentGroup === 4" :value="21">Flush draw</option>
                 <option v-if="currentGroup === 4" :value="22">Flush present</option>
                 <option v-if="currentGroup === 4" :value="24">4 card flush</option>
-
+                <hr v-if="currentGroup === 4">
                 <option v-if="currentGroup === 4" :value="31">Connected board</option>
                 <option v-if="currentGroup === 4" :value="32">Straight board</option>
                 <option v-if="currentGroup === 4" :value="33">4 card straight gapped</option>
@@ -407,24 +408,24 @@
             <div class="flex-row w-1/6">
               <!-- oh boy this is going to be one hell of a ride -->
               <select 
-              v-model="currentSpecification" 
-              :disabled="!(currentGroup === 0 || ((currentGroup === 1 || currentGroup === 2) && (currentCriterium === 0 || currentCriterium === 1 || currentCriterium === 4 || currentCriterium === 5 || currentCriterium === 6)))" 
+              v-model.number="currentSpecification" 
+              :disabled="!(currentGroup === 0 || ((currentGroup === 1 || currentGroup === 2) && (currentCriterium === 0 || currentCriterium === 1 || currentCriterium === 4 || currentCriterium === 5 || currentCriterium === 6)) || currentGroup === 3 || currentGroup === 4)" 
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm">
-                <option v-if="currentGroup === 0" :value="0">Any</option>
-                <option v-if="currentGroup === 0" :value="13">Ace-high</option>
-                <option v-if="currentGroup === 0" :value="12">King-high</option>
-                <option v-if="currentGroup === 0" :value="11">Queen-high</option>
-                <option v-if="currentGroup === 0" :value="10">Jack-high</option>
-                <option v-if="currentGroup === 0" :value="9">T-high</option>
-                <option v-if="currentGroup === 0" :value="8">9-high</option>
-                <option v-if="currentGroup === 0" :value="7">8-high</option>
-                <option v-if="currentGroup === 0" :value="6">7-high</option>
-                <option v-if="currentGroup === 0" :value="5">6-high</option>
-                <option v-if="currentGroup === 0" :value="4">5-high</option>
-                <option v-if="currentGroup === 0" :value="3">4-high</option>
-                <option v-if="currentGroup === 0" :value="2">3-high</option>
+                <option v-if="currentGroup === 0" :value="0">Any rank</option>
+                <option v-if="currentGroup === 0" :value="12">Ace-high</option>
+                <option v-if="currentGroup === 0" :value="11">King-high</option>
+                <option v-if="currentGroup === 0" :value="10">Queen-high</option>
+                <option v-if="currentGroup === 0" :value="9">Jack-high</option>
+                <option v-if="currentGroup === 0" :value="8">T-high</option>
+                <option v-if="currentGroup === 0" :value="7">9-high</option>
+                <option v-if="currentGroup === 0" :value="6">8-high</option>
+                <option v-if="currentGroup === 0" :value="5">7-high</option>
+                <option v-if="currentGroup === 0" :value="4">6-high</option>
+                <option v-if="currentGroup === 0" :value="3">5-high</option>
+                <option v-if="currentGroup === 0" :value="2">4-high</option>
+                <option v-if="currentGroup === 0" :value="1">3-high</option>
 
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="0">Any</option>
+                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="0">Any rank</option>
                 <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="1">Top high</option>
                 <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="2">Second high</option>
 
@@ -443,6 +444,10 @@
                 <option v-if="(currentGroup === 1 || currentGroup === 2) && (currentCriterium === 5 || currentCriterium === 6)" :value="1">Nut</option>
                 <option v-if="(currentGroup === 1 || currentGroup === 2) && (currentCriterium === 5 || currentCriterium === 6)" :value="2">Second nut</option>
 
+                <option v-if="(currentGroup === 3)" :value="0">One / both</option>
+                <option v-if="(currentGroup === 3)" :value="1">One hole</option>
+                <option v-if="(currentGroup === 3)" :value="2">Both holes</option>
+                
                 <option v-if="(currentGroup === 4)" :value="0">If true</option>
                 <option v-if="(currentGroup === 4)" :value="1">If false</option>
               </select>
@@ -473,6 +478,12 @@
                 class="w-full mt-1 px-2 py-1 rounded-lg text-sm text-center"
               />
             </div>
+          </div>
+
+          <div class="flex w-full justify-center mt-2">
+            <button class="button-base button-blue" @click="pushRules">
+              Push rules
+            </button>
           </div>
         </div>
       </div>
@@ -1072,6 +1083,216 @@ const pushRange = async () => {
   invokes.treePushRangeLock(store.ranges[2], store.currentLimitRange);
 };
 
+const pushRules = async () => {
+
+  store.currentRules.push([
+    [
+      currentGroup.value,
+      currentCriterium.value,
+      currentSpecification.value
+    ],
+    currentPercentage.value,
+    currentLimitation.value,
+    currentPriority.value
+  ])
+  
+  /*
+  invokes.treePushRuleLock(
+    currentGroup.value,
+    currentCriterium.value,
+    currentSpecification.value,
+    currentPercentage.value,
+    currentLimitation.value,
+    currentPriority.value
+  );
+  */
+};
+
+const ruleToText = (
+  rule: [[number, number, number], number, number, number]
+) => {
+  const [[group, criterium, specification], percentage, limitation, priority] = rule;
+
+  let text = "";
+
+  if (group === 0) {
+    text += "Hand group > ";
+
+    if (criterium === 0) {
+      text += "Any hand > ";
+    } else if (criterium === 1) {
+      text += "A-high > ";
+    } else if (criterium === 2) {
+      text += "Suited > ";
+    } else if (criterium === 3) {
+      text += "Offsuit > ";
+    }
+
+
+    if (specification === 0) {
+      text += "Any rank";
+    } else if (specification === 12) {
+      text += "A-high";
+    } else if (specification === 11) {
+      text += "K-high";
+    } else if (specification === 10) {
+      text += "Q-high";
+    } else if (specification === 9) {
+      text += "J-high";
+    } else if (specification === 8) {
+      text += "T-high";
+    } else if (specification === 7) {
+      text += "9-high";
+    } else if (specification === 6) {
+      text += "8-high";
+    } else if (specification === 5) {
+      text += "7-high";
+    } else if (specification === 4) {
+      text += "6-high";
+    } else if (specification === 3) {
+      text += "5-high";
+    } else if (specification === 2) {
+      text += "4-high";
+    } else if (specification === 1) {
+      text += "3-high";
+    }
+  }
+
+  else if (group === 1 || group === 2) {
+    if(group === 2)
+      text += "Made hand (or better) > ";
+    else
+      text += "Made hand (strict) > ";
+  
+    if (criterium === 0) {
+      text += "High card > ";
+  
+      if (specification === 0) {
+        text += "Any rank";
+      } else if (specification === 1) {
+        text += "Top high";
+      } else if (specification === 2) {
+        text += "Second high";
+      }
+    } else if (criterium === 1) {
+      text += "One pair > ";
+
+      if (specification === 0) {
+        text += "Any";
+      } else if (specification === 1) {
+        text += "Overpair";
+      } else if (specification === 2) {
+        text += "Top pair";
+      } else if (specification === 3) {
+        text += "Middle pair";
+      } else if (specification === 4) {
+        text += "Bottom pair";
+      }
+    } else if (criterium === 2) {
+      text += "Two pair";
+    } else if (criterium === 3) {
+      text += "Trip";
+    } else if (criterium === 4) {
+      text += "Set > ";
+
+      if (specification === 0) {
+        text += "Any";
+      } else if (specification === 1) {
+        text += "Top set";
+      } else if (specification === 2) {
+        text += "Middle set";
+      } else if (specification === 3) {
+        text += "Bottom set";
+      }
+    } else if (criterium === 5) {
+      text += "Straight > ";
+
+      if (specification === 0) {
+        text += "Any";
+      } else if (specification === 1) {
+        text += "Nut";
+      } else if (specification === 2) {
+        text += "Second nut";
+      }
+    } else if (criterium === 6) {
+      text += "Flush > ";
+
+      if (specification === 0) {
+        text += "Any";
+      } else if (specification === 1) {
+        text += "Nut";
+      } else if (specification === 2) {
+        text += "Second nut";
+      }
+    } else if (criterium === 7) {
+      text += "Full house";
+    } else if (criterium === 8) {
+      text += "Quads";
+    } else if (criterium === 9) {
+      text += "Straight flush";
+    }
+  }
+
+  else if (group === 3) {
+    text += "Draw > ";
+
+    if (criterium === 0) {
+      text += "Overcards";
+    } else if (criterium === 1) {
+      text += "Gutshot";
+    } else if (criterium === 2) {
+      text += "Open-ended straight draw";
+    } else if (criterium === 3) {
+      text += "Flush draw";
+    }
+  }
+  
+  else if (group === 4) {
+    text += "Board texture > ";
+
+    if (criterium === 0) {
+      text += "Dry board > ";
+    } else if (criterium === 11) {
+      text += "Paired board > ";
+    } else if (criterium === 12) {
+      text += "Trip board > ";
+    } else if (criterium === 13) {
+      text += "Quad board > ";
+    } else if (criterium === 21) {
+      text += "Flush draw > ";
+    } else if (criterium === 22) {
+      text += "Flush present > ";
+    } else if (criterium === 24) {
+      text += "4 card flush > ";
+    } else if (criterium === 31) {
+      text += "Connected board > ";
+    } else if (criterium === 32) {
+      text += "Straight board > ";
+    } else if (criterium === 33) {
+      text += "4 card straight gapped > ";
+    } else if (criterium === 34) {
+      text += "4 card straight > ";
+    }
+    if (specification === 0) {
+      text += "If true";
+    } else if (criterium === 1) {
+      text += "If false";
+    }
+  }
+
+  text += ` - ${percentage}%`;
+
+  if (limitation === -1) {
+    text += " or less";
+  } else if (limitation === 1) {
+    text += " or more";
+  }
+
+  text += ` (priority ${priority})`;
+
+  return text;
+}
+
 const updateActions = async () => {
   let tuple = await invokes.treePullRangeLock();
 
@@ -1113,6 +1334,7 @@ const currentLimitation = ref(0);
 const currentPriority = ref(0);
 
 const onGroupChange = () => {
+  console.log(currentGroup)
   currentCriterium.value = 0;
   currentSpecification.value = 0;
 };
