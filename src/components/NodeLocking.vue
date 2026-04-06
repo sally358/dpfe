@@ -800,6 +800,8 @@ const selectSpot = async (
 
   isLocked = false;
   autoScrollNav();
+
+  await updateActions()
 };
 
 const autoScrollNav = async () => {
@@ -1059,6 +1061,20 @@ const onRangeTextChange = async () => {
 
 const pushRange = async () => {
   invokes.treePushRangeLock(store.ranges[2], store.currentLimitRange);
+};
+
+const updateActions = async () => {
+  let tuple = await invokes.treePullRangeLock();
+
+  if(tuple[0] === null)
+    store.ranges[2] = Array.from({ length: 13 * 13 }, () => 0)
+  else
+    store.ranges[2] = tuple[0];
+
+  if(tuple[1] === null)
+    store.currentLimitRange = Array.from({ length: 13 * 13 }, () => 1)
+  else
+    store.currentLimitRange = tuple[1];
 };
 
 
