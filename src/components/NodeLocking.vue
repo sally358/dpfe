@@ -708,7 +708,7 @@ const comboSelect = async (
   needRebuild: boolean,
   needAmountUpdate: boolean
 ) => {
-  selectSpot(spotIndex, needSplice, needRebuild, needAmountUpdate)
+  await selectSpot(spotIndex, needSplice, needRebuild, needAmountUpdate);
   
   if (spotIndex != 0 && spotIndex != 1)
     await updateActions()
