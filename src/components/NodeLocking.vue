@@ -299,7 +299,7 @@
             <template #content>
               <div class="px-1 py-0.5 text-justify">
                 <div>
-                  Rule locking allows to lock hands that falls into specific criteria, such as "all suited connectors", "straigths", "all hands containing Ace" etc. <br />
+                  Rule locking allows to lock hands and scenarios that falls into specific criteria, such as "a-highs", "straigths", "flush boards" etc. <br />
                   This can be used to simplify input or to lock specific lines depending on the board configuration, which can not be achieved by non-conditional hand locking. <br />
                   Standard node locking takes precedence over rule locking, so if a hand is locked by standard node locking, it will be retain original action even if it does fall into the criteria of the rule locking.
                 </div>
@@ -494,12 +494,13 @@
             <div class="flex">
               <div class="flex flex-col">
                 <div
-                  v-for="(rule) in store.currentRules"
+                  v-for="(rule, index) in store.currentRules"
                   class="flex items-center"
                 >
-                  <!--button class="mr-2" @click="deleteAddedLine(index)">
+                  
+                  <button class="mr-2" @click="deleteRule(index)">
                     <TrashIcon class="w-5 h-5 text-gray-600" />
-                  </button-->
+                  </button>
 
                   <span>{{ ruleToText(rule) }}</span>
                 </div>
@@ -1131,6 +1132,21 @@ const pushRules = async () => {
   await updateRules();
 
   console.log(store.currentRules)
+};
+
+const deleteRule = async (index: number) => {
+
+  if (store.currentRules === null || index >= store.currentRules.length)
+    throw new Error("what are you deleting mate")
+
+  store.currentRules.splice(index, 1);
+
+  if (store.currentRules.length === 0)
+    store.currentRules = null;
+  
+  await invokes.treePushRuleLock(store.currentRules);
+
+  await updateRules();
 };
 
 const updateRules = async () => {
