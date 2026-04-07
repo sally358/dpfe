@@ -249,7 +249,7 @@
       
       <!-- Locks -->
 
-      <div v-if="selectedSpotIndex != 1" class="flex gap-8">
+      <div v-if="selectedSpotIndex != 1 && !isTreeError" class="flex gap-8">
         <div class="flex-col w-1/6">
           <div class="text-[1.0625rem] text-semibold">Range locking</div>
           <RangeMiniViewer
@@ -479,11 +479,32 @@
               />
             </div>
           </div>
+        </div>
 
-          <div class="flex w-full justify-center mt-2">
-            <button class="button-base button-blue" @click="pushRules">
-              Push rules
-            </button>
+        <div class="flex w-full justify-center mt-2">
+          <button class="button-base button-blue" @click="pushRules">
+            Push rules
+          </button>
+        </div>
+        
+        <div
+          v-if="
+            store.currentRules !== null
+          "
+        >
+          <div class="flex">
+            <div class="flex flex-col">
+              <div
+                v-for="(rule) in store.currentRules"
+                class="flex items-center"
+              >
+                <!--button class="mr-2" @click="deleteAddedLine(index)">
+                  <TrashIcon class="w-5 h-5 text-gray-600" />
+                </button-->
+
+                <span>{{ ruleToText(rule) }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -722,7 +743,10 @@ const comboSelect = async (
   await selectSpot(spotIndex, needSplice, needRebuild, needAmountUpdate);
   
   if (spotIndex != 0 && spotIndex != 1)
-    await updateActions()
+  {
+    await updateActions();
+    await updateRules();
+  }
 }
 
 const selectSpot = async (
@@ -1085,6 +1109,9 @@ const pushRange = async () => {
 
 const pushRules = async () => {
 
+  if (store.currentRules === null)
+    store.currentRules = []
+
   store.currentRules.push([
     [
       currentGroup.value,
@@ -1096,17 +1123,14 @@ const pushRules = async () => {
     currentPriority.value
   ])
   
-  /*
-  invokes.treePushRuleLock(
-    currentGroup.value,
-    currentCriterium.value,
-    currentSpecification.value,
-    currentPercentage.value,
-    currentLimitation.value,
-    currentPriority.value
-  );
-  */
+  await invokes.treePushRuleLock(store.currentRules);
+
+  await updateRules();
 };
+
+const updateRules = async () => {
+  store.currentRules = await invokes.treePullRuleLock();
+}
 
 const ruleToText = (
   rule: [[number, number, number], number, number, number]
@@ -1126,6 +1150,8 @@ const ruleToText = (
       text += "Suited > ";
     } else if (criterium === 3) {
       text += "Offsuit > ";
+    } else {
+      text += "??? >"
     }
 
 
@@ -1155,6 +1181,8 @@ const ruleToText = (
       text += "4-high";
     } else if (specification === 1) {
       text += "3-high";
+    } else {
+      text += "???"
     }
   }
 
@@ -1173,6 +1201,8 @@ const ruleToText = (
         text += "Top high";
       } else if (specification === 2) {
         text += "Second high";
+      } else {
+        text += "???"
       }
     } else if (criterium === 1) {
       text += "One pair > ";
@@ -1187,6 +1217,8 @@ const ruleToText = (
         text += "Middle pair";
       } else if (specification === 4) {
         text += "Bottom pair";
+      } else {
+        text += "???"
       }
     } else if (criterium === 2) {
       text += "Two pair";
@@ -1203,6 +1235,8 @@ const ruleToText = (
         text += "Middle set";
       } else if (specification === 3) {
         text += "Bottom set";
+      } else {
+        text += "???"
       }
     } else if (criterium === 5) {
       text += "Straight > ";
@@ -1213,6 +1247,8 @@ const ruleToText = (
         text += "Nut";
       } else if (specification === 2) {
         text += "Second nut";
+      } else {
+        text += "???"
       }
     } else if (criterium === 6) {
       text += "Flush > ";
@@ -1223,6 +1259,8 @@ const ruleToText = (
         text += "Nut";
       } else if (specification === 2) {
         text += "Second nut";
+      } else {
+        text += "???"
       }
     } else if (criterium === 7) {
       text += "Full house";
@@ -1230,6 +1268,8 @@ const ruleToText = (
       text += "Quads";
     } else if (criterium === 9) {
       text += "Straight flush";
+    } else {
+      text += "???"
     }
   }
 
@@ -1237,13 +1277,27 @@ const ruleToText = (
     text += "Draw > ";
 
     if (criterium === 0) {
-      text += "Overcards";
+      text += "Overcards > ";
     } else if (criterium === 1) {
-      text += "Gutshot";
+      text += "Backdoor flush draw > ";
     } else if (criterium === 2) {
-      text += "Open-ended straight draw";
+      text += "Gutshot > ";
+    } else if (criterium === 2) {
+      text += "Open-ended straight draw > ";
     } else if (criterium === 3) {
-      text += "Flush draw";
+      text += "Flush draw > ";
+    } else {
+      text += "???"
+    }
+    
+    if (specification === 0) {
+      text += "One / both";
+    } else if (criterium === 1) {
+      text += "One hole";
+    } else if (criterium === 2) {
+      text += "Both holes";
+    } else {
+      text += "???"
     }
   }
   
@@ -1272,12 +1326,19 @@ const ruleToText = (
       text += "4 card straight gapped > ";
     } else if (criterium === 34) {
       text += "4 card straight > ";
+    } else {
+      text += "??? > "
     }
+
     if (specification === 0) {
       text += "If true";
     } else if (criterium === 1) {
       text += "If false";
+    } else {
+      text += "???"
     }
+  } else {
+    text += "???"
   }
 
   text += ` - ${percentage}%`;
