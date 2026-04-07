@@ -177,6 +177,16 @@ export const treePullRangeLock = async (): Promise<[number[] | null, number[] | 
   return await invoke("tree_pull_range_lock");
 }
 
+export const treePushRuleLock = async (ruleTupleArray: [[number, number, number], number, number, number][] | null) => 
+{
+  await invoke("tree_push_rule_lock", { ruleTupleArray } );
+}
+
+export const treePullRuleLock = async (): Promise<[[number, number, number], number, number, number][] | null> =>
+{
+  return await invoke("tree_pull_rule_lock");
+}
+
 /* Bunching effect */
 
 export const bunchingInit = async (board: number[]): Promise<string | null> => {
