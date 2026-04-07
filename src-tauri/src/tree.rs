@@ -325,3 +325,41 @@ pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Op
     let mut tree = tree_state.lock().unwrap();
     tree.pull_range_lock_from_current_node()
 }
+
+
+#[tauri::command]
+pub fn tree_push_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>, rule_tuples: Option<Vec<((u8, u8, u8), f32, i8, i32)>>) 
+{
+    let mut tree = tree_state.lock().unwrap();
+
+    let lock_rules: Option<Vec<RuleLock>>;
+    
+    if rule_tuples.is_some()
+    {
+        lock_rules = Some(rule_tuples.unwrap().into_iter().map(RuleLock::from).collect());
+    }
+    else
+    {
+        lock_rules = None;
+    }
+    
+    tree.push_rule_lock_on_current_node(lock_rules).unwrap();
+}
+
+
+#[tauri::command]
+pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Option<Vec<((u8, u8, u8), f32, i8, i32)>>
+{
+    let mut tree = tree_state.lock().unwrap();
+    let lock_rules = tree.pull_rule_lock_from_current_node();
+
+    if lock_rules.is_some()
+    {
+        return Some(lock_rules.unwrap().iter().map(RuleLock::tuplify).collect());
+    }
+    else
+    {
+        return None;
+    }
+    
+}
