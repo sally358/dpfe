@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { sanitizeBetString } from "./utils";
+import { RuleLock } from "./invokes";
 
 export type NavView = "solver" | "results" | "export";
 
@@ -101,10 +102,8 @@ export const useStore = defineStore("app", {
       Array.from({ length: 13 * 13 }, () => 0)
     ),
 
-    nodelockRanges: [] as [number, number[], number[]][],
-    // format: [nodeIndex, range (length 169), limitation ranges (-1 - this or less, 0 - strict, 1 - this or more)]
-    nodelockRules: [] as [number, [number, number, number?], number, number, number][],
-    // format: [nodeIndex, [criteriumGroup, criterium, specification (if applicable)], percentage, limitation (-1 - this or less, 0 - strict, 1 - this or more), priority (less than 0 - before range locking, more than 0 - after range locking, 0 - error lmao; higher priority overrides lower priority)]
+    currentRules: null as RuleLock[] | null,
+    // format: [[criteriumGroup, criterium, specification], percentage, limitation (-1 - this or less, 0 - strict, 1 - this or more), priority (less than 0 - before range locking, more than 0 - after range locking, 0 - error lmao; higher priority overrides lower priority)]
     
     currentLimitRange: Array.from({ length: 13 * 13 }, () => 1),
     isNodelockReloadQueued: false,
