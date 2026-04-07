@@ -177,12 +177,14 @@ export const treePullRangeLock = async (): Promise<[number[] | null, number[] | 
   return await invoke("tree_pull_range_lock");
 }
 
-export const treePushRuleLock = async (ruleTupleArray: [[number, number, number], number, number, number][] | null) => 
+export const treePushRuleLock = async (ruleTupleArray: RuleLock[] | null) => 
 {
-  await invoke("tree_push_rule_lock", { ruleTupleArray } );
+  console.log("here")
+
+  await invoke("tree_push_rule_lock", { rules: ruleTupleArray } );
 }
 
-export const treePullRuleLock = async (): Promise<[[number, number, number], number, number, number][] | null> =>
+export const treePullRuleLock = async (): Promise<RuleLock[] | null> =>
 {
   return await invoke("tree_pull_rule_lock");
 }
@@ -385,4 +387,12 @@ export const gameGetChanceReports = async (
     eqr: reports.eqr,
     strategy: reports.strategy,
   };
+};
+
+export interface RuleLock
+{
+  ruleType: [number, number, number];
+  percentage: number;
+  limitation: number;
+  priority: number;
 };
