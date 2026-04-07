@@ -479,30 +479,30 @@
               />
             </div>
           </div>
-        </div>
+          
+          <div class="flex w-full justify-center mt-2">
+            <button class="button-base button-blue" @click="pushRules">
+              Push rules
+            </button>
+          </div>
 
-        <div class="flex w-full justify-center mt-2">
-          <button class="button-base button-blue" @click="pushRules">
-            Push rules
-          </button>
-        </div>
-        
-        <div
-          v-if="
-            store.currentRules !== null
-          "
-        >
-          <div class="flex">
-            <div class="flex flex-col">
-              <div
-                v-for="(rule) in store.currentRules"
-                class="flex items-center"
-              >
-                <!--button class="mr-2" @click="deleteAddedLine(index)">
-                  <TrashIcon class="w-5 h-5 text-gray-600" />
-                </button-->
+          <div
+            v-if="
+              store.currentRules !== null
+            "
+          >
+            <div class="flex">
+              <div class="flex flex-col">
+                <div
+                  v-for="(rule) in store.currentRules"
+                  class="flex items-center"
+                >
+                  <!--button class="mr-2" @click="deleteAddedLine(index)">
+                    <TrashIcon class="w-5 h-5 text-gray-600" />
+                  </button-->
 
-                <span>{{ ruleToText(rule) }}</span>
+                  <span>{{ ruleToText(rule) }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -600,6 +600,7 @@ import { useStore, useConfigStore } from "../store";
 import { convertBetString, readableLineString, trimRegex, rangeRegex, cardText } from "../utils";
 import { Spot, SpotRoot, SpotChance, SpotPlayer } from "../result-types";
 import * as invokes from "../invokes";
+import { RuleLock } from "../invokes";
 
 const store = useStore();
 
@@ -1112,20 +1113,24 @@ const pushRules = async () => {
   if (store.currentRules === null)
     store.currentRules = []
 
-  store.currentRules.push([
-    [
+  store.currentRules.push({
+    ruleType: [
       currentGroup.value,
       currentCriterium.value,
       currentSpecification.value
     ],
-    currentPercentage.value,
-    currentLimitation.value,
-    currentPriority.value
-  ])
+    percentage: currentPercentage.value,
+    limitation: currentLimitation.value,
+    priority: currentPriority.value
+  })
+
+  console.log(store.currentRules)
   
   await invokes.treePushRuleLock(store.currentRules);
 
   await updateRules();
+
+  console.log(store.currentRules)
 };
 
 const updateRules = async () => {
@@ -1133,9 +1138,12 @@ const updateRules = async () => {
 }
 
 const ruleToText = (
-  rule: [[number, number, number], number, number, number]
+  rule: RuleLock
 ) => {
-  const [[group, criterium, specification], percentage, limitation, priority] = rule;
+  const [group, criterium, specification] = rule.ruleType;
+  const percentage = rule.percentage;
+  const limitation = rule.limitation;
+  const priority = rule.priority;
 
   let text = "";
 
