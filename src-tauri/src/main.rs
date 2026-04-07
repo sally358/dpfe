@@ -53,6 +53,8 @@ fn main() {
             tree_delete_removed_line,
             tree_push_range_lock,
             tree_pull_range_lock,
+            tree_push_rule_lock,
+            tree_pull_rule_lock,
             bunching_init,
             bunching_clear,
             bunching_progress,
