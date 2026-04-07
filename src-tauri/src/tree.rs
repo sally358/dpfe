@@ -1,5 +1,6 @@
 use postflop_solver::*;
 use std::sync::Mutex;
+use serde::{Deserialize, Serialize};
 
 #[inline]
 fn action_to_string(action: Action) -> String {
@@ -326,39 +327,63 @@ pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Op
     tree.pull_range_lock_from_current_node()
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RuleLockAssPain
+{
+    rule_type: (u8, u8, u8),
+    percentage: f32,
+    limitation: i8,
+    priority: i32,
+}
+
+impl RuleLockAssPain
+{
+    fn normalize(&self) -> RuleLock
+    {
+        RuleLock { rule_type: self.rule_type, percentage: self.percentage, limitation: self.limitation, priority: self.priority }
+    }
+}
+
+pub fn ass_painify(rule_lock: &RuleLock) -> RuleLockAssPain
+{
+    RuleLockAssPain { rule_type: rule_lock.rule_type, percentage: rule_lock.percentage, limitation: rule_lock.limitation, priority: rule_lock.priority }
+}
 
 #[tauri::command]
-pub fn tree_push_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>, rule_tuples: Option<Vec<((u8, u8, u8), f32, i8, i32)>>) 
+pub fn tree_push_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>, rules: Option<Vec<RuleLockAssPain>>) 
 {
     let mut tree = tree_state.lock().unwrap();
 
-    let lock_rules: Option<Vec<RuleLock>>;
-    
-    if rule_tuples.is_some()
+    let normal: Option<Vec<RuleLock>>;
+
+
+    if rules.is_some()
     {
-        lock_rules = Some(rule_tuples.unwrap().into_iter().map(RuleLock::from).collect());
+        normal = Some(rules.unwrap().iter().map(RuleLockAssPain::normalize).collect());
     }
     else
     {
-        lock_rules = None;
+        normal = None;
     }
     
-    tree.push_rule_lock_on_current_node(lock_rules).unwrap();
+    tree.push_rule_lock_on_current_node(normal).unwrap();
 }
 
 
 #[tauri::command]
-pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Option<Vec<((u8, u8, u8), f32, i8, i32)>>
+pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Option<Vec<RuleLockAssPain>>
 {
     let mut tree = tree_state.lock().unwrap();
     let lock_rules = tree.pull_rule_lock_from_current_node();
 
     if lock_rules.is_some()
     {
-        return Some(lock_rules.unwrap().iter().map(RuleLock::tuplify).collect());
+        return Some(lock_rules.unwrap().iter().map(|a| ass_painify(a)).collect());
     }
     else
     {
+        println!("NONE!!!");
         return None;
     }
     
