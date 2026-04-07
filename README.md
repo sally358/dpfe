@@ -71,7 +71,7 @@ However, if you want to use the solver for more serious purposes, please conside
 [Tauri]: https://tauri.app/
 
 **Related repositories**
-- Solver engine: https://github.com/b-inary/postflop-solver
+- Solver engine: ~~https://github.com/b-inary/postflop-solver~~ https://github.com/sally358/postflop-solver-dpfe
 
 ## Comparison to WASM Postflop
 
