@@ -237,7 +237,7 @@ pub fn game_solve_step(
 ) {
     let game = game_state.lock().unwrap();
     let pool = pool_state.lock().unwrap();
-    pool.install(|| solve_step(&*game, current_iteration));
+    pool.install(|| solve_step::<PostFlopPair>(&*game, current_iteration));
 }
 
 #[tauri::command(async)]
@@ -247,7 +247,7 @@ pub fn game_exploitability(
 ) -> f32 {
     let game = game_state.lock().unwrap();
     let pool = pool_state.lock().unwrap();
-    pool.install(|| compute_exploitability(&*game))
+    pool.install(|| compute_exploitability::<PostFlopPair>(&*game))
 }
 
 #[tauri::command(async)]
@@ -256,7 +256,7 @@ pub fn game_finalize(
     pool_state: tauri::State<Mutex<ThreadPool>>,
 ) {
     let pool = pool_state.lock().unwrap();
-    pool.install(|| finalize(&mut *game_state.lock().unwrap()));
+    pool.install(|| finalize::<PostFlopPair>(&mut *game_state.lock().unwrap()));
 }
 
 #[tauri::command]
