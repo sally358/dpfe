@@ -316,16 +316,39 @@ pub fn tree_delete_removed_line(tree_state: tauri::State<Mutex<ActionTree>>, lin
 pub fn tree_push_range_lock(tree_state: tauri::State<Mutex<ActionTree>>, lock_range: Vec<f32>, lock_limit: Vec<i8>) 
 {
     let mut tree = tree_state.lock().unwrap();
-    tree.push_range_lock_on_current_node(lock_range, lock_limit).unwrap();
+    let lock_range_normalized: Vec<f32> = lock_range.into_iter().map(|x| x / 100.0).collect();
+    tree.push_range_lock_on_current_node(lock_range_normalized, lock_limit).unwrap();
 }
-
 
 #[tauri::command]
 pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Option<Vec<f32>>, Option<Vec<i8>>)
 {
-    let mut tree = tree_state.lock().unwrap();
+    let tree = tree_state.lock().unwrap();
     tree.pull_range_lock_from_current_node()
 }
+
+#[tauri::command]
+pub fn tree_extract_nodelocks(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Vec<(Vec<String>, Vec<f32>, Vec<i8>)>, Vec<(Vec<String>, Vec<RuleLockAssPain>)>) 
+{
+    let range_locks_unparsed: Vec<(Vec<Action>, Vec<f32>, Vec<i8>)>;
+    let rule_locks_unparsed: Vec<(Vec<Action>, Vec<RuleLock>)>;
+
+    let tree = tree_state.lock().unwrap();
+    (range_locks_unparsed, rule_locks_unparsed) = tree.extract_all_locks();
+
+    let range_locks = range_locks_unparsed.into_iter().map(|(actions, ranges, limits)| {
+        let action_strings = actions.into_iter().map(encode_action).collect();
+        (action_strings, ranges, limits)
+    }).collect();
+    let rule_locks = rule_locks_unparsed.into_iter().map(|(actions, locks)| {
+        let action_strings = actions.into_iter().map(encode_action).collect();
+        let ass_locks = locks.iter().map(ass_painify).collect();
+        (action_strings, ass_locks)
+    }).collect();
+
+    (range_locks, rule_locks)
+}
+
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -339,16 +362,18 @@ pub struct RuleLockAssPain
 
 impl RuleLockAssPain
 {
-    fn normalize(&self) -> RuleLock
+    pub fn normalize(&self) -> RuleLock
     {
-        RuleLock { rule_type: self.rule_type, percentage: self.percentage, limitation: self.limitation, priority: self.priority }
+        RuleLock { rule_type: self.rule_type, percentage: self.percentage / 100.0, limitation: self.limitation, priority: self.priority }
     }
 }
 
+// transforms normal RuleLock to TypeScript-integrated structurally identical RuleLockAssPain, as normal RuleLock apparently can't be integrated
 pub fn ass_painify(rule_lock: &RuleLock) -> RuleLockAssPain
 {
-    RuleLockAssPain { rule_type: rule_lock.rule_type, percentage: rule_lock.percentage, limitation: rule_lock.limitation, priority: rule_lock.priority }
+    RuleLockAssPain { rule_type: rule_lock.rule_type, percentage: (rule_lock.percentage * 100.0), limitation: rule_lock.limitation, priority: rule_lock.priority }
 }
+
 
 #[tauri::command]
 pub fn tree_push_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>, rules: Option<Vec<RuleLockAssPain>>) 
@@ -374,7 +399,7 @@ pub fn tree_push_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>, rules: O
 #[tauri::command]
 pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Option<Vec<RuleLockAssPain>>
 {
-    let mut tree = tree_state.lock().unwrap();
+    let tree = tree_state.lock().unwrap();
     let lock_rules = tree.pull_rule_lock_from_current_node();
 
     if lock_rules.is_some()
