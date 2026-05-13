@@ -1,4 +1,4 @@
-desktop postflop foldem edition. yeah, you have to compile it to use it.
+desktop postflop foldem edition. fork of https://github.com/b-inary/desktop-postflop. yeah, you have to compile it to use it.
 
 added sally features:
 * (1) strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
