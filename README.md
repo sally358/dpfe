@@ -98,10 +98,10 @@ See the [WASM Postflop repository] for more detailed comparisons, including some
     - We do not distribute macOS builds because we are not enrolled in the Apple Developer Program and cannot sign the app (please see the "Build" section below and build it yourself).
   - Linux: glibc 2.31 and later (e.g., Ubuntu 20.04 and later)
 - CPU
-  - x86-64: must support AVX2 instructions
+  - x86-64: ~~must support AVX2 instructions~~
     - Intel: Haswell (2013) and later
     - AMD: Zen (1st gen; 2017) and later
-    - If you have a CPU without AVX2 support, you can modify `src-tauri/.cargo/config.toml` and build it yourself. (sally note: I modified it, but you can reenable these weird instructions or whatever in that same very place if you want)
+    - If you have a CPU ~~without~~ with AVX2 support, you can modify `src-tauri/.cargo/config.toml` and build it yourself. *I have no idea what these instructions do, but you can investigate it by yourself.*
   - Apple silicon: M1 and later
 
 ## Download
