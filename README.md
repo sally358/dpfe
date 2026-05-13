@@ -1,13 +1,13 @@
 desktop postflop foldem edition. yeah, you have to compile it to use it.
 
 added sally features:
-* strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
-* drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
-* icm support (seems to work well, but I'm still not sure)
+* (1) strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
+* (2) drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
+* (3) icm support (seems to work well, but I'm still not sure)
 
 in development:
-* nodelocking and rulelocking (WIP in v0.3.0)
-* saving modified trees (as a part of nodelocking update)
+* (4) nodelocking and rulelocking (WIP in v0.3.0)
+* (5) saving modified trees (as a part of nodelocking update)
 
 planned features:
 * PKO stuff
@@ -51,7 +51,7 @@ She didn't ask for water. She didn't ask for a doctor. She simply adjusted her g
 
 She’s back, she’s undead, and she’s coding with a vengeance. Stay tuned. The counter-attack is coming. DP:FE lives!
 
-_the next section is from original DP by b-inary._
+_the next section is a slightly modified readme of the original DP by b-inary._
 
 # Desktop Postflop
 
@@ -88,7 +88,7 @@ However, if you want to use the solver for more serious purposes, please conside
 
 See the [WASM Postflop repository] for more detailed comparisons, including some commercial solvers.
 
-[WASM Postflop repository]: https://github.com/b-inary/wasm-postflop#comparison
+[Original DP WASM Postflop repository]: https://github.com/b-inary/wasm-postflop#comparison
 
 ## Supported environments
 
@@ -106,9 +106,11 @@ See the [WASM Postflop repository] for more detailed comparisons, including some
 
 ## Download
 
-You can download the app from the [GitHub releases page].
+You will be able to download versions 0.3.0 of the app from the [GitHub releases page].
 
-[GitHub releases page]: https://github.com/b-inary/desktop-postflop/releases
+[GitHub releases page]: ~~https://github.com/b-inary/desktop-postflop/releases~~ https://github.com/sally358/dpfe/releases
+
+Versions below 0.3.0 do not feature pre-compiled installers.
 
 - Windows
   - The installer version (.msi) automatically installs dependent runtimes.
@@ -132,7 +134,8 @@ C:\Users\<username>\AppData\Local\b-inary.desktop-postflop
 
 [Rust] and [Node.js] need to be installed to build.
 On Linux, you will also need to install some dependencies; please see the [Tauri documentation] for details.
-For better performance, we also recommend installing the Rust nightly channel:
+~~For better performance, we also recommend installing the Rust nightly channel:~~
+Nightly rust is mandatory:
 
 ```sh
 $ rustup install nightly
@@ -164,8 +167,8 @@ If you want to use stable Rust instead of nightly Rust, please modify the follow
 ## ~~Roadmap (in order of priority)~~
 
 - Results saving/loading feature ([#8](https://github.com/b-inary/desktop-postflop/issues/8))
-- Hand filter feature for the result viewer ([#6](https://github.com/b-inary/desktop-postflop/issues/6))
-- Node-locking feature
+- (~1) Hand filter feature for the result viewer ([#6](https://github.com/b-inary/desktop-postflop/issues/6))
+- (5) Node-locking feature
 - Short deck support
 - Aggregated reporting feature for multiple flops
 - GTO training mode ([#9](https://github.com/b-inary/desktop-postflop/issues/9))
