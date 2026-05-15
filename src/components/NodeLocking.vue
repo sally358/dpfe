@@ -7,7 +7,7 @@
         <InformationCircleIcon class="inline w-5 h-5 mt-[0.1875rem] mr-1.5" />
         <div>
           Note, that only locking some hands will result in solver adapting the strategy for the unlocked hands, which can lead to unexpected results. <br />
-          If some hand is only locked on some frequency without compensation in other lines, the hand will still be fully locked, and the spare frequency will be delegated to the most passive available line.
+          For obvious reasons, if you lock any hand, the solver will get stuck at higher exploitability, so rely on the max iteration option to stop solving.  <br />
         </div>
       </div>
 
@@ -526,11 +526,11 @@
           :disabled="isTreeError || invalidLinesArray.length > 0"
           @click="saveEdit"
         >
-          Save Edit
+          Save Edit & Locks
         </button>
 
         <button class="button-base button-red" @click="cancelEdit">
-          Cancel Edit
+          Cancel
         </button>
       </div>
 
@@ -982,8 +982,19 @@ const removeSelectedNode = async () => {
   invalidLines.value = await invokes.treeInvalidTerminals();
 };
 
-const saveEdit = () => {
-  emit("save", addedLines.value, removedLines.value);
+const saveEdit = async () => {
+  config.addedLines = addedLines.value;
+  config.removedLines = removedLines.value;
+  if (config.addedLines === "" && config.removedLines === "") {
+    config.expectedBoardLength = 0;
+  } else {
+    config.expectedBoardLength = boardLength;
+  }
+
+  let locks = await invokes.treeExtractNodelocks();
+
+  config.lockingRanges = locks[0];
+  config.lockingRules = locks[1];
 };
 
 const cancelEdit = () => {
