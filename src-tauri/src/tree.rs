@@ -324,7 +324,18 @@ pub fn tree_push_range_lock(tree_state: tauri::State<Mutex<ActionTree>>, lock_ra
 pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Option<Vec<f32>>, Option<Vec<i8>>)
 {
     let tree = tree_state.lock().unwrap();
-    tree.pull_range_lock_from_current_node()
+    let lock_range_abnormal = tree.pull_range_lock_from_current_node();
+
+    if lock_range_abnormal.0.is_some()
+    {
+        let lock_range = lock_range_abnormal.0.unwrap();
+        let lock_range_percented: Vec<f32> = lock_range.into_iter().map(|x| x * 100.0).collect();
+        return (Some(lock_range_percented), lock_range_abnormal.1);
+    }
+    else
+    {
+        return (None, None);
+    }
 }
 
 #[tauri::command]
@@ -338,7 +349,8 @@ pub fn tree_extract_nodelocks(tree_state: tauri::State<Mutex<ActionTree>>) ->  (
 
     let range_locks = range_locks_unparsed.into_iter().map(|(actions, ranges, limits)| {
         let action_strings = actions.into_iter().map(encode_action).collect();
-        (action_strings, ranges, limits)
+        let ranges_percented = ranges.into_iter().map(|x| x * 100.0).collect();
+        (action_strings, ranges_percented, limits)
     }).collect();
     let rule_locks = rule_locks_unparsed.into_iter().map(|(actions, locks)| {
         let action_strings = actions.into_iter().map(encode_action).collect();
@@ -371,7 +383,7 @@ impl RuleLockAssPain
 // transforms normal RuleLock to TypeScript-integrated structurally identical RuleLockAssPain, as normal RuleLock apparently can't be integrated
 pub fn ass_painify(rule_lock: &RuleLock) -> RuleLockAssPain
 {
-    RuleLockAssPain { rule_type: rule_lock.rule_type, percentage: (rule_lock.percentage * 100.0), limitation: rule_lock.limitation, priority: rule_lock.priority }
+    RuleLockAssPain { rule_type: rule_lock.rule_type, percentage: rule_lock.percentage * 100.0, limitation: rule_lock.limitation, priority: rule_lock.priority }
 }
 
 
