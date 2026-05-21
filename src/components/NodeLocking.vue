@@ -356,10 +356,11 @@
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm"
               @change="onGroupChange">
                 <option :value="0">Hand group</option>
-                <option :value="1">Made hands (strict)</option>
-                <option :value="2">Made hands (or better)</option>
-                <option :value="3">Draws</option>
-                <option :value="4">Board state</option>
+                <option :value="1">Hand rank</option>
+                <option :value="2">Made hands (strict)</option>
+                <option :value="3">Made hands (or better)</option>
+                <option :value="4">Draws</option>
+                <option :value="5">Board state</option>
               </select>
             </div>
             <div class="flex-row w-1/6">
@@ -367,89 +368,103 @@
               v-model.number="currentCriterium" 
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm"
               @change="onCriteriumChange">
-                <option v-if="currentGroup === 0" :value="0">Any hand</option>
-                <option v-if="currentGroup === 0" :value="1">Pocket pair</option>
-                <option v-if="currentGroup === 0" :value="2">Suited</option>
-                <option v-if="currentGroup === 0" :value="3">Offsuit</option>
+                <option v-if="currentGroup === 0" :value="0">Pocket pair</option>
+                <option v-if="currentGroup === 0" :value="1">Suited</option>
+                <option v-if="currentGroup === 0" :value="2">Offsuit</option>
 
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="0">High card</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="1">One pair</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="2">Two pair</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="3">Trip</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="4">Set</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="5">Straight</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="6">Flush</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="7">Full house</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="8">Quads</option>
-                <option v-if="currentGroup === 1 || currentGroup === 2" :value="9">Straight flush</option>
+                <option v-if="currentGroup === 1" :value="0">Lower than</option>
+                <option v-if="currentGroup === 1" :value="1">Equals</option>
+                <option v-if="currentGroup === 1" :value="2">Higher than</option>
 
-                <option v-if="currentGroup === 3" :value="0">Overcards</option>
-                <option v-if="currentGroup === 3" :value="1">Gutshot</option>
-                <option v-if="currentGroup === 3" :value="2">Open-ended straight draw</option>
-                <option v-if="currentGroup === 3" :value="3">Flush draw</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="0">High card</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="1">One pair</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="2">Two pair</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="3">Trip</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="4">Set</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="5">Straight</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="6">Flush</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="7">Full house</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="8">Quads</option>
+                <option v-if="currentGroup === 2 || currentGroup === 3" :value="9">Straight flush</option>
+
+                <option v-if="currentGroup === 4" :value="0">Overcards</option>
+                <option v-if="currentGroup === 4" :value="1">Gutshot</option>
+                <option v-if="currentGroup === 4" :value="2">Open-ended straight draw</option>
+                <option v-if="currentGroup === 4" :value="3">Backdoor flush draw</option>
+                <option v-if="currentGroup === 4" :value="4">Flush draw</option>
                 
 
-                <option v-if="currentGroup === 4" :value="0">Dry board</option>
-                <hr v-if="currentGroup === 4">
-                <option v-if="currentGroup === 4" :value="11">Paired board</option>
-                <option v-if="currentGroup === 4" :value="12">Trip board</option>
-                <option v-if="currentGroup === 4" :value="13">Quad board</option>
-                <hr v-if="currentGroup === 4">
-                <option v-if="currentGroup === 4" :value="21">Flush draw</option>
-                <option v-if="currentGroup === 4" :value="22">Flush present</option>
-                <option v-if="currentGroup === 4" :value="24">4 card flush</option>
-                <hr v-if="currentGroup === 4">
-                <option v-if="currentGroup === 4" :value="31">Connected board</option>
-                <option v-if="currentGroup === 4" :value="32">Straight board</option>
-                <option v-if="currentGroup === 4" :value="33">4 card straight gapped</option>
-                <option v-if="currentGroup === 4" :value="34">4 card straight</option>
+                <option v-if="currentGroup === 5" :value="0">4-card rainbow</option>
+                <option v-if="currentGroup === 5" :value="1">No flush</option>
+                <option v-if="currentGroup === 5" :value="2">No straight</option>
+                <option v-if="currentGroup === 5" :value="3">No repeats</option>
+                <hr v-if="currentGroup === 5">
+                <option v-if="currentGroup === 5" :value="11">Paired board</option>
+                <option v-if="currentGroup === 5" :value="12">Double paired</option>
+                <option v-if="currentGroup === 5" :value="13">Trip board</option>
+                <option v-if="currentGroup === 5" :value="14">Board boat</option>
+                <option v-if="currentGroup === 5" :value="15">Quad board</option>
+                <hr v-if="currentGroup === 5">
+                <option v-if="currentGroup === 5" :value="21">Flush draw</option>
+                <option v-if="currentGroup === 5" :value="22">3 card flush</option>
+                <option v-if="currentGroup === 5" :value="23">4 card flush</option>
+                <option v-if="currentGroup === 5" :value="24">Board flush</option>
+                <hr v-if="currentGroup === 5">
+                <option v-if="currentGroup === 5" :value="31">Connected board</option>
+                <option v-if="currentGroup === 5" :value="32">3 card straight any gaps</option>
+                <option v-if="currentGroup === 5" :value="33">3 card straight no gaps</option>
+                <option v-if="currentGroup === 5" :value="34">4 card straight gapped</option>
+                <option v-if="currentGroup === 5" :value="35">4 card straight no gap</option>
+                <option v-if="currentGroup === 5" :value="36">Board straight</option>
               </select>
             </div>
             <div class="flex-row w-1/6">
               <!-- oh boy this is going to be one hell of a ride -->
               <select 
               v-model.number="currentSpecification" 
-              :disabled="!(currentGroup === 0 || ((currentGroup === 1 || currentGroup === 2) && (currentCriterium === 0 || currentCriterium === 1 || currentCriterium === 4 || currentCriterium === 5 || currentCriterium === 6)) || currentGroup === 3 || currentGroup === 4)" 
+              :disabled="!(currentGroup === 1 || ((currentGroup === 2 || currentGroup === 3) && (currentCriterium === 0 || currentCriterium === 1 || currentCriterium === 4 || currentCriterium === 5 || currentCriterium === 6)) || currentGroup === 4 || currentGroup === 5 || currentGroup === 6)" 
               class="w-full mt-1 px-2 py-1 rounded-lg text-sm">
-                <option v-if="currentGroup === 0" :value="0">Any rank</option>
-                <option v-if="currentGroup === 0" :value="12">Ace-high</option>
-                <option v-if="currentGroup === 0" :value="11">King-high</option>
-                <option v-if="currentGroup === 0" :value="10">Queen-high</option>
-                <option v-if="currentGroup === 0" :value="9">Jack-high</option>
-                <option v-if="currentGroup === 0" :value="8">T-high</option>
-                <option v-if="currentGroup === 0" :value="7">9-high</option>
-                <option v-if="currentGroup === 0" :value="6">8-high</option>
-                <option v-if="currentGroup === 0" :value="5">7-high</option>
-                <option v-if="currentGroup === 0" :value="4">6-high</option>
-                <option v-if="currentGroup === 0" :value="3">5-high</option>
-                <option v-if="currentGroup === 0" :value="2">4-high</option>
-                <option v-if="currentGroup === 0" :value="1">3-high</option>
+                <option v-if="currentGroup === 1" :value="12">Ace-high</option>
+                <option v-if="currentGroup === 1" :value="11">King-high</option>
+                <option v-if="currentGroup === 1" :value="10">Queen-high</option>
+                <option v-if="currentGroup === 1" :value="9">Jack-high</option>
+                <option v-if="currentGroup === 1" :value="8">T-high</option>
+                <option v-if="currentGroup === 1" :value="7">9-high</option>
+                <option v-if="currentGroup === 1" :value="6">8-high</option>
+                <option v-if="currentGroup === 1" :value="5">7-high</option>
+                <option v-if="currentGroup === 1" :value="4">6-high</option>
+                <option v-if="currentGroup === 1" :value="3">5-high</option>
+                <option v-if="currentGroup === 1" :value="2">4-high</option>
+                <option v-if="currentGroup === 1" :value="1">3-high</option>
+                <option v-if="currentGroup === 1" :value="0">2-high</option>
 
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="0">Any rank</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="1">Top high</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 0" :value="2">Second high</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 0" :value="0">Any rank</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 0" :value="1">Top high</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 0" :value="2">Second high</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 0" :value="3">Weak high</option>
 
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 1" :value="0">Any</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 1" :value="1">Overpair</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 1" :value="2">Top pair</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 1" :value="3">Middle pair</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 1" :value="4">Bottom pair</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 1" :value="0">Any</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 1" :value="1">Overpair</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 1" :value="2">Top pair</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 1" :value="3">Second pair</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 1" :value="4">Weak pair</option>
 
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 4" :value="0">Any</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 4" :value="1">Top set</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 4" :value="2">Middle set</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && currentCriterium === 4" :value="3">Bottom set</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 4" :value="0">Any</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 4" :value="1">Top set</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 4" :value="2">Second set</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && currentCriterium === 4" :value="3">Low set</option>
                 
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && (currentCriterium === 5 || currentCriterium === 6)" :value="0">Any</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && (currentCriterium === 5 || currentCriterium === 6)" :value="1">Nut</option>
-                <option v-if="(currentGroup === 1 || currentGroup === 2) && (currentCriterium === 5 || currentCriterium === 6)" :value="2">Second nut</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && (currentCriterium === 5 || currentCriterium === 6)" :value="0">Any</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && (currentCriterium === 5 || currentCriterium === 6)" :value="1">Nut</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && (currentCriterium === 5 || currentCriterium === 6)" :value="2">Second nut</option>
+                <option v-if="(currentGroup === 2 || currentGroup === 3) && (currentCriterium === 5 || currentCriterium === 6)" :value="3">Weak</option>
 
-                <option v-if="(currentGroup === 3)" :value="0">One / both</option>
-                <option v-if="(currentGroup === 3)" :value="1">One hole</option>
-                <option v-if="(currentGroup === 3)" :value="2">Both holes</option>
+                <option v-if="(currentGroup === 4)" :value="0">One / both</option>
+                <option v-if="(currentGroup === 4)" :value="1">One hole</option>
+                <option v-if="(currentGroup === 4)" :value="2">Both holes</option>
                 
-                <option v-if="(currentGroup === 4)" :value="0">If true</option>
-                <option v-if="(currentGroup === 4)" :value="1">If false</option>
+                <option v-if="(currentGroup === 5)" :value="0">If true</option>
+                <option v-if="(currentGroup === 5)" :value="1">If false</option>
               </select>
             </div>
 
@@ -1175,24 +1190,34 @@ const ruleToText = (
   let text = "";
 
   if (group === 0) {
-    text += "Hand group > ";
+    text += "Hand class > ";
 
     if (criterium === 0) {
-      text += "Any hand > ";
+      text += "Any hand";
     } else if (criterium === 1) {
-      text += "A-high > ";
+      text += "Paired";
     } else if (criterium === 2) {
-      text += "Suited > ";
+      text += "Suited";
     } else if (criterium === 3) {
-      text += "Offsuit > ";
+      text += "Offsuit";
+    } else {
+      text += "???"
+    }
+  }
+  else if (group === 1) {
+    text += "Hand rank > ";
+
+    if (criterium === 0) {
+      text += "Lower than > ";
+    } else if (criterium === 1) {
+      text += "Equals > ";
+    } else if (criterium === 2) {
+      text += "Higher than > ";
     } else {
       text += "??? >"
     }
 
-
-    if (specification === 0) {
-      text += "Any rank";
-    } else if (specification === 12) {
+    if (specification === 12) {
       text += "A-high";
     } else if (specification === 11) {
       text += "K-high";
@@ -1216,13 +1241,15 @@ const ruleToText = (
       text += "4-high";
     } else if (specification === 1) {
       text += "3-high";
+    } else if (specification === 0) {
+      text += "2-high";
     } else {
       text += "???"
     }
   }
 
-  else if (group === 1 || group === 2) {
-    if(group === 2)
+  else if (group === 2 || group === 3) {
+    if(group === 3)
       text += "Made hand (or better) > ";
     else
       text += "Made hand (strict) > ";
@@ -1236,6 +1263,8 @@ const ruleToText = (
         text += "Top high";
       } else if (specification === 2) {
         text += "Second high";
+      } else if (specification === 3) {
+        text += "Weak high";
       } else {
         text += "???"
       }
@@ -1249,9 +1278,9 @@ const ruleToText = (
       } else if (specification === 2) {
         text += "Top pair";
       } else if (specification === 3) {
-        text += "Middle pair";
+        text += "Second pair";
       } else if (specification === 4) {
-        text += "Bottom pair";
+        text += "Weak pair";
       } else {
         text += "???"
       }
@@ -1267,9 +1296,9 @@ const ruleToText = (
       } else if (specification === 1) {
         text += "Top set";
       } else if (specification === 2) {
-        text += "Middle set";
+        text += "Second set";
       } else if (specification === 3) {
-        text += "Bottom set";
+        text += "Low set";
       } else {
         text += "???"
       }
@@ -1282,6 +1311,8 @@ const ruleToText = (
         text += "Nut";
       } else if (specification === 2) {
         text += "Second nut";
+      } else if (specification === 3) {
+        text += "Weak";
       } else {
         text += "???"
       }
@@ -1294,6 +1325,8 @@ const ruleToText = (
         text += "Nut";
       } else if (specification === 2) {
         text += "Second nut";
+      } else if (specification === 3) {
+        text += "Weak";
       } else {
         text += "???"
       }
@@ -1308,18 +1341,18 @@ const ruleToText = (
     }
   }
 
-  else if (group === 3) {
+  else if (group === 4) {
     text += "Draw > ";
 
     if (criterium === 0) {
       text += "Overcards > ";
     } else if (criterium === 1) {
-      text += "Backdoor flush draw > ";
-    } else if (criterium === 2) {
       text += "Gutshot > ";
     } else if (criterium === 2) {
       text += "Open-ended straight draw > ";
     } else if (criterium === 3) {
+      text += "Backdoor flush draw > ";
+    } else if (criterium === 4) {
       text += "Flush draw > ";
     } else {
       text += "???"
@@ -1327,47 +1360,63 @@ const ruleToText = (
     
     if (specification === 0) {
       text += "One / both";
-    } else if (criterium === 1) {
+    } else if (specification === 1) {
       text += "One hole";
-    } else if (criterium === 2) {
+    } else if (specification === 2) {
       text += "Both holes";
     } else {
       text += "???"
     }
   }
   
-  else if (group === 4) {
+  else if (group === 5) {
     text += "Board texture > ";
 
     if (criterium === 0) {
-      text += "Dry board > ";
+      text += "4-card rainbow > ";
+    } else if (criterium === 1) {
+      text += "No flush > ";
+    } else if (criterium === 2) {
+      text += "No straight > ";
+    } else if (criterium === 3) {
+      text += "No repeats > ";
     } else if (criterium === 11) {
       text += "Paired board > ";
     } else if (criterium === 12) {
-      text += "Trip board > ";
+      text += "Double paired board > ";
     } else if (criterium === 13) {
+      text += "Trip board > ";
+    } else if (criterium === 14) {
+      text += "Board boat > ";
+    } else if (criterium === 15) {
       text += "Quad board > ";
     } else if (criterium === 21) {
       text += "Flush draw > ";
     } else if (criterium === 22) {
-      text += "Flush present > ";
-    } else if (criterium === 24) {
+      text += "3 card flush > ";
+    } else if (criterium === 23) {
       text += "4 card flush > ";
+    } else if (criterium === 24) {
+      text += "Board flush > ";
     } else if (criterium === 31) {
       text += "Connected board > ";
     } else if (criterium === 32) {
-      text += "Straight board > ";
+      text += "3 card straight any gaps > ";
     } else if (criterium === 33) {
-      text += "4 card straight gapped > ";
+      text += "3 card straight no gaps > ";
     } else if (criterium === 34) {
-      text += "4 card straight > ";
+      text += "4 card straight gapped > ";
+    } else if (criterium === 35) {
+      text += "4 card straight no gap > ";
+    } else if (criterium === 36) {
+      text += "Board straight > ";
     } else {
       text += "??? > "
     }
 
     if (specification === 0) {
       text += "If true";
-    } else if (criterium === 1) {
+    } else if (specification === 1) {
       text += "If false";
     } else {
       text += "???"
