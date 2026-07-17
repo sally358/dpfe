@@ -189,6 +189,15 @@ export const treePullRuleLock = async (): Promise<RuleLock[] | null> =>
   return await invoke("tree_pull_rule_lock");
 }
 
+export const treeExtractNodelocks = async (): Promise<[ rangeLocks: [String[], number[], number[]][], ruleLocks: [String[], RuleLock[]][] ]> =>
+{
+  return await invoke("tree_extract_nodelocks");
+}
+
+export const treePushAll = async (lockingRangesUnparsed: [String[], Number[], Number[]][], lockingRulesUnparsed: [String[], RuleLock[]][] ) => {
+  await invoke("tree_push_all", { lockingRangesUnparsed, lockingRulesUnparsed });
+}
+
 /* Bunching effect */
 
 export const bunchingInit = async (board: number[]): Promise<string | null> => {
@@ -235,7 +244,9 @@ export const gameInit = async (
   forceAllinThreshold: number,
   mergingThreshold: number,
   addedLines: string,
-  removedLines: string
+  removedLines: string,
+  lockingRangesUnparsed: [String[], Number[], Number[]] [],
+  lockingRulesUnparsed: [String[], RuleLock[]] []
 ): Promise<string | null> => {
   return await invoke("game_init", {
     board,
@@ -274,6 +285,9 @@ export const gameInit = async (
     mergingThreshold,
     addedLines,
     removedLines,
+
+    lockingRangesUnparsed,
+    lockingRulesUnparsed
   });
 };
 
