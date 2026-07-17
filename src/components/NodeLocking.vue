@@ -361,6 +361,7 @@
                 <option :value="3">Made hands (or better)</option>
                 <option :value="4">Draws</option>
                 <option :value="5">Board state</option>
+                <option :value="6">Street card</option>
               </select>
             </div>
             <div class="flex-row w-1/6">
@@ -394,28 +395,33 @@
                 <option v-if="currentGroup === 4" :value="4">Flush draw</option>
                 
 
-                <option v-if="currentGroup === 5" :value="0">4-card rainbow</option>
-                <option v-if="currentGroup === 5" :value="1">No flush</option>
-                <option v-if="currentGroup === 5" :value="2">No straight</option>
-                <option v-if="currentGroup === 5" :value="3">No repeats</option>
+                <option v-if="currentGroup === 5" :value="0">Rainbow</option>
+                <option v-if="currentGroup === 5" :value="1">Flush present</option>
+                <option v-if="currentGroup === 5" :value="2">Straight present</option>
+                <option v-if="currentGroup === 5" :value="3">Repeats</option>
                 <hr v-if="currentGroup === 5">
                 <option v-if="currentGroup === 5" :value="11">Paired board</option>
                 <option v-if="currentGroup === 5" :value="12">Double paired</option>
                 <option v-if="currentGroup === 5" :value="13">Trip board</option>
-                <option v-if="currentGroup === 5" :value="14">Board boat</option>
+                <option v-if="currentGroup === 5" :value="14">Boat board</option>
                 <option v-if="currentGroup === 5" :value="15">Quad board</option>
                 <hr v-if="currentGroup === 5">
                 <option v-if="currentGroup === 5" :value="21">Flush draw</option>
-                <option v-if="currentGroup === 5" :value="22">3 card flush</option>
-                <option v-if="currentGroup === 5" :value="23">4 card flush</option>
-                <option v-if="currentGroup === 5" :value="24">Board flush</option>
+                <option v-if="currentGroup === 5" :value="22">Two flush draws</option>
+                <option v-if="currentGroup === 5" :value="23">3 card flush</option>
+                <option v-if="currentGroup === 5" :value="24">4 card flush</option>
+                <option v-if="currentGroup === 5" :value="25">Board flush</option>
                 <hr v-if="currentGroup === 5">
                 <option v-if="currentGroup === 5" :value="31">Connected board</option>
-                <option v-if="currentGroup === 5" :value="32">3 card straight any gaps</option>
+                <option v-if="currentGroup === 5" :value="32">3 card straight any</option>
                 <option v-if="currentGroup === 5" :value="33">3 card straight no gaps</option>
-                <option v-if="currentGroup === 5" :value="34">4 card straight gapped</option>
+                <option v-if="currentGroup === 5" :value="34">4 card straight any</option>
                 <option v-if="currentGroup === 5" :value="35">4 card straight no gap</option>
                 <option v-if="currentGroup === 5" :value="36">Board straight</option>
+
+                <option v-if="currentGroup === 6" :value="0">Any</option>
+                <option v-if="currentGroup === 6" :value="1">Turn</option>
+                <option v-if="currentGroup === 6" :value="2">River</option>
               </select>
             </div>
             <div class="flex-row w-1/6">
@@ -465,6 +471,20 @@
                 
                 <option v-if="(currentGroup === 5)" :value="0">If true</option>
                 <option v-if="(currentGroup === 5)" :value="1">If false</option>
+
+                <option v-if="currentGroup === 6" :value="12">Ace</option>
+                <option v-if="currentGroup === 6" :value="11">King</option>
+                <option v-if="currentGroup === 6" :value="10">Queen</option>
+                <option v-if="currentGroup === 6" :value="9">Jack</option>
+                <option v-if="currentGroup === 6" :value="8">T</option>
+                <option v-if="currentGroup === 6" :value="7">9</option>
+                <option v-if="currentGroup === 6" :value="6">8</option>
+                <option v-if="currentGroup === 6" :value="5">7</option>
+                <option v-if="currentGroup === 6" :value="4">6</option>
+                <option v-if="currentGroup === 6" :value="3">5</option>
+                <option v-if="currentGroup === 6" :value="2">4</option>
+                <option v-if="currentGroup === 6" :value="1">3</option>
+                <option v-if="currentGroup === 6" :value="0">2</option>
               </select>
             </div>
 
@@ -1005,6 +1025,7 @@ const saveEdit = async () => {
   } else {
     config.expectedBoardLength = boardLength;
   }
+  console.log("expected", boardLength);
 
   let locks = await invokes.treeExtractNodelocks();
 
@@ -1074,6 +1095,45 @@ onMounted(async () => {
   await selectSpot(0, true, false, true);
 });
 
+const wellLetsLoad = async () => {
+  isTreeError.value = !(await invokes.treeNew(
+    boardLength,
+    config.startingPot,
+    config.effectiveStack,
+    config.donkOption,
+    convertBetString(config.oopFlopBet),
+    convertBetString(config.oopFlopRaise),
+    convertBetString(config.oopTurnBet),
+    convertBetString(config.oopTurnRaise),
+    config.donkOption ? convertBetString(config.oopTurnDonk) : "",
+    convertBetString(config.oopRiverBet),
+    convertBetString(config.oopRiverRaise),
+    config.donkOption ? convertBetString(config.oopRiverDonk) : "",
+    convertBetString(config.ipFlopBet),
+    convertBetString(config.ipFlopRaise),
+    convertBetString(config.ipTurnBet),
+    convertBetString(config.ipTurnRaise),
+    convertBetString(config.ipRiverBet),
+    convertBetString(config.ipRiverRaise),
+    config.addAllInThreshold / 100,
+    config.forceAllInThreshold / 100,
+    config.mergingThreshold / 100,
+    config.addedLines,
+    config.removedLines
+  ));
+
+  addedLines.value = await invokes.treeAddedLines();
+  removedLines.value = await invokes.treeRemovedLines();
+  invalidLines.value = await invokes.treeInvalidTerminals();
+
+  invokes.treePushAll(config.lockingRanges, config.lockingRules);
+
+  await selectSpot(0, true, false, true);
+}
+
+defineExpose({
+  wellLetsLoad
+})
 
 
 // silly range editing stuff
@@ -1373,13 +1433,13 @@ const ruleToText = (
     text += "Board texture > ";
 
     if (criterium === 0) {
-      text += "4-card rainbow > ";
+      text += "Rainbow > ";
     } else if (criterium === 1) {
-      text += "No flush > ";
+      text += "Flush present > ";
     } else if (criterium === 2) {
-      text += "No straight > ";
+      text += "Straight present > ";
     } else if (criterium === 3) {
-      text += "No repeats > ";
+      text += "Repeats > ";
     } else if (criterium === 11) {
       text += "Paired board > ";
     } else if (criterium === 12) {
@@ -1387,25 +1447,27 @@ const ruleToText = (
     } else if (criterium === 13) {
       text += "Trip board > ";
     } else if (criterium === 14) {
-      text += "Board boat > ";
+      text += "Boat board > ";
     } else if (criterium === 15) {
       text += "Quad board > ";
     } else if (criterium === 21) {
       text += "Flush draw > ";
     } else if (criterium === 22) {
-      text += "3 card flush > ";
+      text += "Two flush draws > ";
     } else if (criterium === 23) {
-      text += "4 card flush > ";
+      text += "3 card flush > ";
     } else if (criterium === 24) {
+      text += "4 card flush > ";
+    } else if (criterium === 25) {
       text += "Board flush > ";
     } else if (criterium === 31) {
       text += "Connected board > ";
     } else if (criterium === 32) {
-      text += "3 card straight any gaps > ";
+      text += "3 card straight any > ";
     } else if (criterium === 33) {
       text += "3 card straight no gaps > ";
     } else if (criterium === 34) {
-      text += "4 card straight gapped > ";
+      text += "4 card straight any > ";
     } else if (criterium === 35) {
       text += "4 card straight no gap > ";
     } else if (criterium === 36) {
@@ -1421,7 +1483,53 @@ const ruleToText = (
     } else {
       text += "???"
     }
-  } else {
+  } 
+  
+  else if (group === 6) {
+    text += "Street card > ";
+
+    if (criterium === 0) {
+      text += "Any > ";
+    } else if (criterium === 1) {
+      text += "Turn > ";
+    } else if (criterium === 2) {
+      text += "River > ";
+    } else {
+      text += "??? > "
+    }
+
+    if (specification === 12) {
+      text += "Ace";
+    } else if (specification === 11) {
+      text += "King";
+    } else if (specification === 10) {
+      text += "Queen";
+    } else if (specification === 9) {
+      text += "Jack";
+    } else if (specification === 8) {
+      text += "T";
+    } else if (specification === 7) {
+      text += "9";
+    } else if (specification === 6) {
+      text += "8";
+    } else if (specification === 5) {
+      text += "7";
+    } else if (specification === 4) {
+      text += "6";
+    } else if (specification === 3) {
+      text += "5";
+    } else if (specification === 2) {
+      text += "4";
+    } else if (specification === 1) {
+      text += "3";
+    } else if (specification === 0) {
+      text += "2";
+    } else {
+      text += "???"
+    }
+  }
+  
+  else {
     text += "???"
   }
 
