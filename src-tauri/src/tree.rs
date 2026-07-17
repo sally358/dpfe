@@ -316,7 +316,7 @@ pub fn tree_delete_removed_line(tree_state: tauri::State<Mutex<ActionTree>>, lin
 pub fn tree_push_range_lock(tree_state: tauri::State<Mutex<ActionTree>>, lock_range: Vec<f32>, lock_limit: Vec<i8>) 
 {
     let mut tree = tree_state.lock().unwrap();
-    let lock_range_normalized: Vec<f32> = lock_range.into_iter().map(|x| x / 100.0).collect();
+    let lock_range_normalized: Vec<f32> = lock_range.iter().map(|x| x / 100.0).collect();
     tree.push_range_lock_on_current_node(lock_range_normalized, lock_limit).unwrap();
 }
 
@@ -329,7 +329,7 @@ pub fn tree_pull_range_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  (Op
     if lock_range_abnormal.0.is_some()
     {
         let lock_range = lock_range_abnormal.0.unwrap();
-        let lock_range_percented: Vec<f32> = lock_range.into_iter().map(|x| x * 100.0).collect();
+        let lock_range_percented: Vec<f32> = lock_range.iter().map(|x| x * 100.0).collect();
         return (Some(lock_range_percented), lock_range_abnormal.1);
     }
     else
@@ -424,4 +424,50 @@ pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Opti
         return None;
     }
     
+}
+
+
+#[tauri::command]
+pub fn tree_push_all(
+    tree_state: tauri::State<Mutex<ActionTree>>,
+    locking_ranges_unparsed: Vec<(Vec<String>, Vec<f32>, Vec<i8>)>,
+    locking_rules_unparsed: Vec<(Vec<String>, Vec<RuleLockAssPain>)>
+) {
+    let tree = tree_state.lock().unwrap();
+
+    for (line_strs, rrange, lrange) in locking_ranges_unparsed {
+        let mut line_vec = Vec::new() as Vec<Action>;
+
+        for line_str in line_strs {
+            println!("decoding range rule line: {line_str}");
+            line_vec.push(
+                decode_action(&line_str)
+            );
+        }
+
+        let range_parsed = rrange.iter().map(|&r| r / 100.0).collect();
+
+        match tree.push_range_lock_recursive(&line_vec, range_parsed, lrange, 0, None) {
+            Err(e) => println!("Something's fishy with locking ranges: {e}"),
+            Ok(_) => (),
+        };
+    }
+
+    for (line_strs, rule_locks) in locking_rules_unparsed {
+        let mut line_vec = Vec::new() as Vec<Action>;
+
+        for line_str in line_strs {
+            println!("decoding locking rule line: {line_str}");
+            line_vec.push(
+                decode_action(&line_str)
+            );
+        }
+
+        let ass_rule_locks = rule_locks.iter().map(|rl| rl.normalize()).collect();
+
+        match tree.push_rule_lock_recursive(&line_vec, Some(ass_rule_locks), 0, None) {
+            Err(e) => println!("Yikes, you locking range just friggin died: {e}"),
+            Ok(_) => (),
+        }
+    }
 }
