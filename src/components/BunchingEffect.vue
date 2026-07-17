@@ -192,7 +192,7 @@
 
   <RangeEditor
     v-else
-    :player="editingPlayer + 2"
+    :player="editingPlayer + 3"
     :default-text="rangeTextCopy"
     @save="saveEdit"
     @cancel="cancelEdit"
@@ -235,20 +235,20 @@ const elapsedTimeMs = ref(-1);
 let startTime = 0;
 
 const onUpdate = async (player: number) => {
-  const weights = await invokes.rangeGetWeights(player + 2);
+  const weights = await invokes.rangeGetWeights(player + 3);
   for (let i = 0; i < 13 * 13; ++i) {
-    store.ranges[player + 2][i] = weights[i] * 100;
+    store.ranges[player + 3][i] = weights[i] * 100;
   }
   isRangeTextError.value[player] = false;
 };
 
 const onUpdateLocal = async (player: number) => {
-  rangeTexts.value[player] = await invokes.rangeToString(player + 2);
-  numCombos.value[player] = await invokes.rangeNumCombos(player + 2);
+  rangeTexts.value[player] = await invokes.rangeToString(player + 3);
+  numCombos.value[player] = await invokes.rangeNumCombos(player + 3);
 };
 
 const editRange = async (player: number) => {
-  rangeTextCopy.value = await invokes.rangeToString(player + 2);
+  rangeTextCopy.value = await invokes.rangeToString(player + 3);
   store.headers["bunching"].push(`Fold Range ${player + 1}`);
   editingPlayer.value = player;
 };
@@ -268,7 +268,7 @@ const onRangeTextChange = async (player: number) => {
     }
   }
 
-  const errorString = await invokes.rangeFromString(player + 2, trimmed);
+  const errorString = await invokes.rangeFromString(player + 3, trimmed);
 
   if (errorString) {
     isRangeTextError.value[player] = true;
@@ -279,13 +279,13 @@ const onRangeTextChange = async (player: number) => {
 };
 
 const invertRange = async (player: number) => {
-  await invokes.rangeInvert(player + 2);
+  await invokes.rangeInvert(player + 3);
   await onUpdate(player);
   await onUpdateLocal(player);
 };
 
 const clearRange = async (player: number) => {
-  await invokes.rangeClear(player + 2);
+  await invokes.rangeClear(player + 3);
   await onUpdate(player);
   await onUpdateLocal(player);
 };
@@ -369,7 +369,7 @@ const saveEdit = async () => {
 
 const cancelEdit = async () => {
   rangeTexts.value[editingPlayer.value] = rangeTextCopy.value;
-  await invokes.rangeFromString(editingPlayer.value + 2, rangeTextCopy.value);
+  await invokes.rangeFromString(editingPlayer.value + 3, rangeTextCopy.value);
   await onUpdate(editingPlayer.value);
   store.headers["bunching"].pop();
   editingPlayer.value = -1;
