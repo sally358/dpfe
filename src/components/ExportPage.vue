@@ -131,17 +131,13 @@
           @click="createDrills"
           :disabled="store.isExporting"
         >
+          <span
+            class="spinner inline-block mr-3"
+            v-if="store.isExporting"
+          ></span>
+
           Create drills
         </button>
-      </div>
-
-      <div
-          v-if="store.isExporting"
-          class="flex-row"
-        >
-        <span
-          class="spinner inline-block mr-3"
-        ></span>
       </div>
     </div>
 
