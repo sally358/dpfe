@@ -169,7 +169,7 @@ The general frame in which selected window is displayed
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "../store";
 import * as invokes from "../invokes";
 
@@ -215,9 +215,18 @@ const totalBetAmount = ref([0, 0]);
 
 
 const isSolverFinished = ref(false);
+const isExporting = ref(false);
 store.$subscribe(async (_, store) => {
   if (isSolverFinished.value !== store.isSolverFinished) {
     if ((isSolverFinished.value = store.isSolverFinished)) {
+      await init();
+    } else {
+      clear();
+    }
+  }
+  
+  if (isExporting.value !== store.isExporting) {
+    if(!(isExporting.value = store.isExporting)) {
       await init();
     } else {
       clear();
