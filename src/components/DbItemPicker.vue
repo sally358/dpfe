@@ -511,10 +511,32 @@ const isEqual = (lhs: unknown, rhs: unknown) => {
   return true;
 };
 
-const clone = (value: unknown) => {
+const clone = (value: unknown): unknown => {
   if (value === null || typeof value !== "object") return value;
-  if (Array.isArray(value)) return [...value];
-  return { ...value };
+
+  if (Array.isArray(value)) {
+    return value.map((item) => clone(item));
+  }
+
+  if (value instanceof Date) {
+    return new Date(value.getTime());
+  }
+
+  if (value instanceof RegExp) {
+    return new RegExp(value);
+  }
+
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null) {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([key, entryValue]) => [
+      key,
+      clone(entryValue),
+    ])
+  );
 };
 
 const groupToDbGroup = (group: Group): Db.DbGroup => ({
@@ -1133,6 +1155,7 @@ const checkJson = (array: JsonItem[]) => {
   let valueType = "";
   if (props.storeName === "ranges") valueType = "string";
   if (props.storeName === "configurations") valueType = "object";
+  if (props.storeName === "locks") valueType = "object";
   if (valueType === "") return false;
 
   const map = new Map<string, boolean>();
@@ -1242,7 +1265,7 @@ const importJson = async () => {
     return;
   }
 
-  if (obj.version !== 2) {
+  if (obj.version !== 3) {
     importError.value = "Version mismatch";
     return;
   }
@@ -1289,8 +1312,8 @@ const exportJson = async () => {
     appendRecursive(item, array);
   }
 
-  const obj = { version: 2, name: props.storeName, data: array };
-  const jsonStr = JSON.stringify(obj, undefined, 2);
+  const obj = { version: 3, name: props.storeName, data: array };
+  const jsonStr = JSON.stringify(obj, undefined, 3);
 
   const filePath = await save({
     defaultPath: `${props.storeName}.json`,
