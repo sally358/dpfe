@@ -20,22 +20,62 @@ export type DbGroup = {
   isGroup: 1;
 };
 
+const cloneValue = (value: unknown): unknown => {
+  if (value === null || typeof value !== "object") return value;
+
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneValue(item));
+  }
+
+  if (value instanceof Date) {
+    return new Date(value.getTime());
+  }
+
+  if (value instanceof RegExp) {
+    return new RegExp(value);
+  }
+
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype !== Object.prototype && prototype !== null) {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([key, entryValue]) => [
+      key,
+      cloneValue(entryValue),
+    ])
+  );
+};
+
+const normalizeItem = (item: DbItem | DbGroup): DbItem | DbGroup => {
+  if (item.isGroup) {
+    return item;
+  }
+
+  return {
+    ...item,
+    value: cloneValue(item.value),
+  };
+};
+
 class DesktopPostflopDB extends Dexie {
   public ranges!: Table<DbItem | DbGroup, number>;
   public configurations!: Table<DbItem | DbGroup, number>;
+  public locks!: Table<DbItem | DbGroup, number>;
 
   public constructor() {
     super("DesktopPostflopDB");
 
     this.version(1).stores({
       ranges: "++id, [name0+name1+name2+name3+isGroup]",
-      configurations: "++id, [name0+name1+name2+name3+isGroup]",
+      configurations: "++id, [name0+name1+name2+name3+isGroup]"
     });
 
     this.version(2)
       .stores({
         ranges: "++id, [name0+name1+name2+name3+isGroup]",
-        configurations: "++id, [name0+name1+name2+name3+isGroup]",
+        configurations: "++id, [name0+name1+name2+name3+isGroup]"
       })
       .upgrade((tx) => {
         return tx
@@ -47,6 +87,12 @@ class DesktopPostflopDB extends Dexie {
             }
           });
       });
+    
+    this.version(3).stores({
+      ranges: "++id, [name0+name1+name2+name3+isGroup]",
+      configurations: "++id, [name0+name1+name2+name3+isGroup]",
+      locks: "++id, [name0+name1+name2+name3+isGroup]"
+    });
   }
 }
 
@@ -83,20 +129,21 @@ export const getArray = async (store: string) => {
 export const addItem = async (store: string, item: DbItem) => {
   try {
     const table = db.table(store);
+    const normalizedItem = normalizeItem(item) as DbItem;
 
     return await db.transaction("rw", table, async () => {
       // duplicate check
       const count = await table
         .where("[name0+name1+name2+name3]")
-        .equals([item.name0, item.name1, item.name2, item.name3])
+        .equals([normalizedItem.name0, normalizedItem.name1, normalizedItem.name2, normalizedItem.name3])
         .count();
       if (count > 0) {
         return false;
       }
 
       // parent check
-      if (item.name1 !== "") {
-        const parent = makeParent(item);
+      if (normalizedItem.name1 !== "") {
+        const parent = makeParent(normalizedItem);
         const count = await table
           .where("[name0+name1+name2+name3+isGroup]")
           .equals([parent.name0, parent.name1, parent.name2, parent.name3, 1])
@@ -107,7 +154,7 @@ export const addItem = async (store: string, item: DbItem) => {
       }
 
       // insert
-      await table.add(item);
+      await table.add(normalizedItem);
 
       return true;
     });
@@ -119,12 +166,13 @@ export const addItem = async (store: string, item: DbItem) => {
 export const overwriteItem = async (store: string, item: DbItem) => {
   try {
     const table = db.table(store);
+    const normalizedItem = normalizeItem(item) as DbItem;
 
     return await db.transaction("rw", table, async () => {
       // get collection
       const collection = table
         .where("[name0+name1+name2+name3+isGroup]")
-        .equals([item.name0, item.name1, item.name2, item.name3, 0]);
+        .equals([normalizedItem.name0, normalizedItem.name1, normalizedItem.name2, normalizedItem.name3, 0]);
 
       // check if exists
       if ((await collection.count()) !== 1) {
@@ -132,7 +180,7 @@ export const overwriteItem = async (store: string, item: DbItem) => {
       }
 
       // update
-      return (await collection.modify({ value: item.value })) === 1;
+      return (await collection.modify({ value: normalizedItem.value })) === 1;
     });
   } catch {
     return false;
@@ -271,10 +319,11 @@ export const deleteItem = async (store: string, item: DbItem | DbGroup) => {
 export const bulkAdd = async (store: string, items: (DbItem | DbGroup)[]) => {
   try {
     const table = db.table(store);
+    const normalizedItems = items.map(normalizeItem);
 
     return await db.transaction("rw", table, async () => {
       // insert
-      await table.bulkAdd(items);
+      await table.bulkAdd(normalizedItems);
 
       return true;
     });
