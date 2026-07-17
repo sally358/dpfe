@@ -3,6 +3,7 @@ use postflop_solver::*;
 use rayon::ThreadPool;
 use serde::Serialize;
 use std::sync::Mutex;
+use crate::tree::RuleLockAssPain;
 
 #[inline]
 fn decode_action(action: &str) -> Action {
@@ -101,6 +102,9 @@ pub fn game_init(
     merging_threshold: f64,
     added_lines: String,
     removed_lines: String,
+
+    locking_ranges_unparsed: Vec<(Vec<String>, Vec<f32>, Vec<i8>)>,
+    locking_rules_unparsed: Vec<(Vec<String>, Vec<RuleLockAssPain>)>
 ) -> Option<String> {
     let (turn, river, state) = match board.len() {
         3 => (NOT_DEALT, NOT_DEALT, BoardState::Flop),
@@ -180,6 +184,43 @@ pub fn game_init(
             }
         }
     }
+
+    for (line_strs, rrange, lrange) in locking_ranges_unparsed {
+        let mut line_vec = Vec::new() as Vec<Action>;
+
+        for line_str in line_strs {
+            println!("decoding range rule line: {line_str}");
+            line_vec.push(
+                decode_action(&line_str)
+            );
+        }
+
+        let range_parsed = rrange.iter().map(|&r| r / 100.0).collect();
+
+        match action_tree.push_range_lock_recursive(&line_vec, range_parsed, lrange, 0, None) {
+            Err(e) => println!("Something's fishy with locking ranges: {e}"),
+            Ok(_) => (),
+        };
+    }
+
+    for (line_strs, rule_locks) in locking_rules_unparsed {
+        let mut line_vec = Vec::new() as Vec<Action>;
+
+        for line_str in line_strs {
+            println!("decoding locking rule line: {line_str}");
+            line_vec.push(
+                decode_action(&line_str)
+            );
+        }
+
+        let ass_rule_locks = rule_locks.iter().map(|rl| rl.normalize()).collect();
+
+        match action_tree.push_rule_lock_recursive(&line_vec, Some(ass_rule_locks), 0, None) {
+            Err(e) => println!("Yikes, you locking range just friggin died: {e}"),
+            Ok(_) => (),
+        }
+    }
+
 
     let mut game = game_state.lock().unwrap();
     game.update_config(card_config, action_tree).err()
