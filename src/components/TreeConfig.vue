@@ -661,12 +661,44 @@
         </div>
       </div>
 
-      <div class="flex-grow max-w-[18rem] mt-1 ml-6">
+      <div 
+      class="flex-grow max-w-[18rem] mt-1 ml-6"
+      >
+        <div class="flex flex-row justify-center w-full mb-2">
+            <button
+              :class= "
+              'flex w-[50%] items-center justify-center border border-gray-500 border-t-0 border-b-0 transition' +
+                (!lockLoaderMode ? 'text-red-900' : 'font-semibold')
+              "
+              :disabled="!lockLoaderMode"
+              @click="loaderConfig"
+            >
+              Load tree
+            </button>
+            <button
+              :class= "
+                'flex w-[50%] items-center justify-center border border-gray-500 border-l-0 border-t-0 border-b-0 transition' +
+                (lockLoaderMode ? 'font-bold' : 'font-semibold')
+              "
+              :disabled="lockLoaderMode"
+              @click="loaderConfigLocked"
+            >
+              Load locks
+            </button>
+        </div>
         <DbItemPicker
           store-name="configurations"
-          :value="dbValue"
+          :value="dbValueCut"
           :allow-save="isInputValid"
           @load-item="loadConfig"
+          v-if="!lockLoaderMode"
+        />
+        <DbItemPicker
+          store-name="locks"
+          :value="dbValueLocks"
+          :allow-save="isInputValid"
+          @load-item="loadConfigLocks"
+          v-if="lockLoaderMode"
         />
       </div>
     </div>
@@ -732,6 +764,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useStore, useConfigStore } from "../store";
+import { RuleLock, treePushAll } from "../invokes";
 import {
   MAX_AMOUNT,
   sanitizeBetString,
@@ -741,7 +774,6 @@ import {
 } from "../utils";
 
 import DbItemPicker from "./DbItemPicker.vue";
-import TreeEditor from "./TreeEditor.vue";
 import { Tippy } from "vue-tippy";
 import { QuestionMarkCircleIcon } from "@heroicons/vue/20/solid";
 
@@ -771,16 +803,79 @@ type ConfigValue = {
   expectedBoardLength: number;
   addedLines: string;
   removedLines: string;
+  lockingRules: [String[], RuleLock[]] [];
+  lockingRanges: [String[], Number[], Number[]] [];
 };
+
+type PresetConfigValue = {
+  startingPot: number;
+  effectiveStack: number;
+  rakePercent: number;
+  rakeCap: number;
+  donkOption: number;
+  oopFlopBet: string;
+  oopFlopRaise: string;
+  oopTurnBet: string;
+  oopTurnRaise: string;
+  oopTurnDonk: string;
+  oopRiverBet: string;
+  oopRiverRaise: string;
+  oopRiverDonk: string;
+  ipFlopBet: string;
+  ipFlopRaise: string;
+  ipTurnBet: string;
+  ipTurnRaise: string;
+  ipRiverBet: string;
+  ipRiverRaise: string;
+  addAllInThreshold: number;
+  forceAllInThreshold: number;
+  mergingThreshold: number;
+  expectedBoardLength: number;
+  addedLines: string;
+  removedLines: string;
+};
+
+type PresetLockValue = {
+  startingPot: number;
+  effectiveStack: number;
+  rakePercent: number;
+  rakeCap: number;
+  donkOption: number;
+  oopFlopBet: string;
+  oopFlopRaise: string;
+  oopTurnBet: string;
+  oopTurnRaise: string;
+  oopTurnDonk: string;
+  oopRiverBet: string;
+  oopRiverRaise: string;
+  oopRiverDonk: string;
+  ipFlopBet: string;
+  ipFlopRaise: string;
+  ipTurnBet: string;
+  ipTurnRaise: string;
+  ipRiverBet: string;
+  ipRiverRaise: string;
+  addAllInThreshold: number;
+  forceAllInThreshold: number;
+  mergingThreshold: number;
+  expectedBoardLength: number;
+  addedLines: string;
+  removedLines: string;
+  lockingRules: [String[], RuleLock[]] [];
+  lockingRanges: [String[], Number[], Number[]] [];
+};
+
 
 const store = useStore();
 const config = useConfigStore();
 
 const emit = defineEmits<{
   (e: "setupTree"): void;
+  (e: "pushThemAll"): void;
 }>();
 
 const isEditMode = ref(false);
+const lockLoaderMode = ref(false);
 
 const ICMEnabled = computed(() => store.isICMEnabled);
 
@@ -911,10 +1006,7 @@ const errorLines = computed(() => {
     ![0, 3, 4, 5].includes(config.expectedBoardLength) ||
     (config.expectedBoardLength === 0 &&
       (addedLinesArray.value.length > 0 ||
-        removedLinesArray.value.length > 0)) ||
-    (config.expectedBoardLength > 0 &&
-      addedLinesArray.value.length === 0 &&
-      removedLinesArray.value.length === 0)
+        removedLinesArray.value.length > 0))
   ) {
     errors.push("Invalid configurations (loaded broken configurations?)");
   }
@@ -959,6 +1051,8 @@ const clearConfig = () => {
   config.expectedBoardLength = 0;
   config.addedLines = "";
   config.removedLines = "";
+  config.lockingRanges = [];
+  config.lockingRules = [];
 };
 
 const oopToIp = () => {
@@ -1006,6 +1100,70 @@ const dbValue = computed(
     expectedBoardLength: config.expectedBoardLength,
     addedLines: config.addedLines,
     removedLines: config.removedLines,
+    lockingRanges: config.lockingRanges,
+    lockingRules: config.lockingRules
+  })
+);
+
+const dbValueCut = computed( // for saving to preset configurations
+  (): PresetConfigValue => ({
+    startingPot: config.startingPot,
+    effectiveStack: config.effectiveStack,
+    rakePercent: config.rakePercent,
+    rakeCap: config.rakeCap,
+    donkOption: Number(config.donkOption),
+    oopFlopBet: config.oopFlopBet,
+    oopFlopRaise: config.oopFlopRaise,
+    oopTurnBet: config.oopTurnBet,
+    oopTurnRaise: config.oopTurnRaise,
+    oopTurnDonk: config.donkOption ? config.oopTurnDonk : "",
+    oopRiverBet: config.oopRiverBet,
+    oopRiverRaise: config.oopRiverRaise,
+    oopRiverDonk: config.donkOption ? config.oopRiverDonk : "",
+    ipFlopBet: config.ipFlopBet,
+    ipFlopRaise: config.ipFlopRaise,
+    ipTurnBet: config.ipTurnBet,
+    ipTurnRaise: config.ipTurnRaise,
+    ipRiverBet: config.ipRiverBet,
+    ipRiverRaise: config.ipRiverRaise,
+    addAllInThreshold: config.addAllInThreshold,
+    forceAllInThreshold: config.forceAllInThreshold,
+    mergingThreshold: config.mergingThreshold,
+    expectedBoardLength: config.expectedBoardLength,
+    addedLines: config.addedLines,
+    removedLines: config.removedLines
+  })
+);
+
+const dbValueLocks = computed(
+  (): PresetLockValue => ({
+    startingPot: config.startingPot,
+    effectiveStack: config.effectiveStack,
+    rakePercent: config.rakePercent,
+    rakeCap: config.rakeCap,
+    donkOption: Number(config.donkOption),
+    oopFlopBet: config.oopFlopBet,
+    oopFlopRaise: config.oopFlopRaise,
+    oopTurnBet: config.oopTurnBet,
+    oopTurnRaise: config.oopTurnRaise,
+    oopTurnDonk: config.donkOption ? config.oopTurnDonk : "",
+    oopRiverBet: config.oopRiverBet,
+    oopRiverRaise: config.oopRiverRaise,
+    oopRiverDonk: config.donkOption ? config.oopRiverDonk : "",
+    ipFlopBet: config.ipFlopBet,
+    ipFlopRaise: config.ipFlopRaise,
+    ipTurnBet: config.ipTurnBet,
+    ipTurnRaise: config.ipTurnRaise,
+    ipRiverBet: config.ipRiverBet,
+    ipRiverRaise: config.ipRiverRaise,
+    addAllInThreshold: config.addAllInThreshold,
+    forceAllInThreshold: config.forceAllInThreshold,
+    mergingThreshold: config.mergingThreshold,
+    expectedBoardLength: config.expectedBoardLength,
+    addedLines: config.addedLines,
+    removedLines: config.removedLines,
+    lockingRanges: config.lockingRanges,
+    lockingRules: config.lockingRules
   })
 );
 
@@ -1052,21 +1210,78 @@ const loadConfig = (value: unknown) => {
   }
 };
 
+const loadConfigLocks = (value: unknown) => {
+  const configValue = value as PresetLockValue;
+  config.startingPot = Number(configValue.startingPot);
+
+  if (!store.isICMEnabled)
+  {
+    config.effectiveStack = Number(configValue.effectiveStack);
+    config.rakePercent = Number(configValue.rakePercent);
+    config.rakeCap = Number(configValue.rakeCap);
+  }
+
+  config.donkOption = Boolean(configValue.donkOption);
+  config.addAllInThreshold = Number(configValue.addAllInThreshold);
+  config.forceAllInThreshold = Number(configValue.forceAllInThreshold);
+  config.mergingThreshold = Number(configValue.mergingThreshold);
+  config.expectedBoardLength = Number(configValue.expectedBoardLength);
+  config.addedLines = String(configValue.addedLines);
+  config.removedLines = String(configValue.removedLines);
+
+  const betMembers = [
+    "oopFlopBet",
+    "oopFlopRaise",
+    "oopTurnBet",
+    "oopTurnRaise",
+    "oopTurnDonk",
+    "oopRiverBet",
+    "oopRiverRaise",
+    "oopRiverDonk",
+    "ipFlopBet",
+    "ipFlopRaise",
+    "ipTurnBet",
+    "ipTurnRaise",
+    "ipRiverBet",
+    "ipRiverRaise",
+  ] as const;
+
+  for (const member of betMembers) {
+    const str = String(configValue[member]);
+    const sanitized = sanitizeBetString(str, member.endsWith("Raise"));
+    config[member] = sanitized.valid ? sanitized.s : str;
+  }
+
+  setupTree()
+
+  config.lockingRanges = configValue.lockingRanges;
+  config.lockingRules = configValue.lockingRules;
+
+  console.log(configValue.lockingRanges)
+  console.log(configValue.lockingRules)
+
+  emit("pushThemAll")
+};
+
+const loaderConfig = () => {
+  lockLoaderMode.value = false;
+};
+const loaderConfigLocked = () => {
+  lockLoaderMode.value = true;
+};
+
 const setupTree = () => {
-  // the old lumberjack was actually executed, here is a new one
-  
-  if (config.board.length < 3) {
+  if (!([3, 4, 5].includes(config.board.length))) {
     store.isBoardError = true;
     store.isTreeSetup = false;
     return;
   }
 
+  config.expectedBoardLength = config.board.length;
+
   emit("setupTree");
 
   store.isTreeSetup = true;
-
-  store.nodelockRanges = [];
-  store.nodelockRules = [];
   store.currentLimitRange = Array.from({ length: 13 * 13 }, () => 1);
 };
 
