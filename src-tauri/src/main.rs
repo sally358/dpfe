@@ -55,6 +55,8 @@ fn main() {
             tree_pull_range_lock,
             tree_push_rule_lock,
             tree_pull_rule_lock,
+            tree_extract_nodelocks,
+            tree_push_all,
             bunching_init,
             bunching_clear,
             bunching_progress,
