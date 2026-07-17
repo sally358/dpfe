@@ -46,6 +46,8 @@ export const saveConfigTmp = () => {
     expectedBoardLength: config.expectedBoardLength,
     addedLines: config.addedLines,
     removedLines: config.removedLines,
+    lockingRanges: config.lockingRanges,
+    lockingRules: config.lockingRules
   });
 };
 
@@ -80,6 +82,8 @@ export const saveConfig = () => {
     expectedBoardLength: tmpConfig.expectedBoardLength,
     addedLines: tmpConfig.addedLines,
     removedLines: tmpConfig.removedLines,
+    lockingRanges: tmpConfig.lockingRanges,
+    lockingRules: tmpConfig.lockingRules
   });
 };
 
@@ -103,9 +107,8 @@ export const useStore = defineStore("app", {
     ),
 
     currentRules: null as RuleLock[] | null,
-    // format: [[criteriumGroup, criterium, specification], percentage, limitation (-1 - this or less, 0 - strict, 1 - this or more), priority (less than 0 - before range locking, more than 0 - after range locking, 0 - error lmao; higher priority overrides lower priority)]
-    
     currentLimitRange: Array.from({ length: 13 * 13 }, () => 1),
+
     isNodelockReloadQueued: false,
     isTreeSetup: false,
     isBoardError: false, // yeah we are putting this in the global store sue me
@@ -170,6 +173,8 @@ export const useConfigStore = defineStore("config", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 
   getters: {
@@ -218,6 +223,8 @@ export const useTmpConfigStore = defineStore("tmpConfig", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 });
 
@@ -249,6 +256,8 @@ export const useSavedConfigStore = defineStore("savedConfig", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 });
 
