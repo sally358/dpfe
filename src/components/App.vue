@@ -34,10 +34,16 @@
           <BoardSelector />
         </div>
         <div v-show="store.sideView === 'tree-config'">
-          <TreeConfig @setupTree="reloadNodelock" />
+          <TreeConfig 
+          @setupTree="reloadNodelock" 
+          @pushThemAll="pushEverySingleOneOfThem"
+          />
         </div>
         <div v-show="store.sideView === 'node-locking'">
-          <NodeLocking :key="renodeLock" />
+          <NodeLocking 
+          :key="renodeLock" 
+          ref="nodeLocker"
+          />
         </div>
         <div v-show="store.sideView === 'icm'">
           <ICM />
@@ -88,6 +94,7 @@ import ResultViewer from "./ResultViewer.vue";
 import ExportPage from "./ExportPage.vue";
 
 const renodeLock = ref(0)
+const nodeLocker = ref<InstanceType<typeof NodeLocking> | null>(null)
 
 const store = useStore();
 console.log(store.sideView)
@@ -99,9 +106,12 @@ const updateClientHeight = () => {
 };
 
 const reloadNodelock = () => {
-  console.log("i reloaded")
   renodeLock.value += 1;
 };
+
+const pushEverySingleOneOfThem = () => {
+  nodeLocker.value?.wellLetsLoad()
+}
 
 updateClientHeight();
 window.addEventListener("resize", updateClientHeight);
