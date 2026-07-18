@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { sanitizeBetString } from "./utils";
+import { RuleLock } from "./invokes";
 
 export type NavView = "solver" | "results" | "export";
 
@@ -7,6 +8,7 @@ export type SideView =
   | "oop-range"
   | "ip-range"
   | "board"
+  | "node-locking"
   | "icm"
   | "tree-config"
   | "bunching"
@@ -44,6 +46,8 @@ export const saveConfigTmp = () => {
     expectedBoardLength: config.expectedBoardLength,
     addedLines: config.addedLines,
     removedLines: config.removedLines,
+    lockingRanges: config.lockingRanges,
+    lockingRules: config.lockingRules
   });
 };
 
@@ -78,6 +82,8 @@ export const saveConfig = () => {
     expectedBoardLength: tmpConfig.expectedBoardLength,
     addedLines: tmpConfig.addedLines,
     removedLines: tmpConfig.removedLines,
+    lockingRanges: tmpConfig.lockingRanges,
+    lockingRules: tmpConfig.lockingRules
   });
 };
 
@@ -92,12 +98,21 @@ export const useStore = defineStore("app", {
       board: ["Board"],
       "tree-config": ["Tree Configuration"],
       bunching: ["Bunching Effect"],
+      "node-locking": ["Tree & Nodes"],
       "icm": ["ICM"],
       "run-solver": ["Run Solver"],
     },
     ranges: Array.from({ length: 6 }, () =>
       Array.from({ length: 13 * 13 }, () => 0)
     ),
+
+    currentRules: null as RuleLock[] | null,
+    currentLimitRange: Array.from({ length: 13 * 13 }, () => 1),
+
+    isNodelockReloadQueued: false,
+    isTreeSetup: false,
+    isBoardError: false, // yeah we are putting this in the global store sue me
+
     isBunchingEnabled: false,
     isBunchingRunning: false,
     bunchingFlop: [] as number[],
@@ -113,6 +128,8 @@ export const useStore = defineStore("app", {
     isSolverFinished: false,
     isSolverError: false,
     isFinalizing: false,
+
+    isExporting: false
   }),
 
   getters: {
@@ -124,7 +141,7 @@ export const useStore = defineStore("app", {
         state.isSolverError ||
         state.isFinalizing
       );
-    },
+    }
   },
 });
 
@@ -156,6 +173,8 @@ export const useConfigStore = defineStore("config", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 
   getters: {
@@ -204,6 +223,8 @@ export const useTmpConfigStore = defineStore("tmpConfig", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 });
 
@@ -235,6 +256,8 @@ export const useSavedConfigStore = defineStore("savedConfig", {
     expectedBoardLength: 0,
     addedLines: "",
     removedLines: "",
+    lockingRules: [] as [String[], RuleLock[]] [],
+    lockingRanges: [] as [String[], Number[], Number[]] []
   }),
 });
 

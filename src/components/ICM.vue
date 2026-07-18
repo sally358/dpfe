@@ -6,7 +6,7 @@
       >
         <InformationCircleIcon class="inline w-5 h-5 mt-[0.1875rem] mr-1.5" />
         <div>
-          ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps.<br />
+          ICM mode will have the solver stuck for a while on the first iteration. Don't worry, it is all expected.<br />
           Due to some mysterious computational issues, ICM solutions tend to get stuck at higher exploitability. Consider manually stopping the solver or rely on the max-iterations parameter.
         </div>
       </div>
@@ -237,8 +237,6 @@ const applyICM = () => {
   payouts = payoutsTextarea
     .split("\n")
     .map((s) => parseInt(s.trim().replace(trimRegex, "")));
-
-  console.log("Applying ICM with stacks:", stacks, "and payouts:", payouts);
 
   if(payouts.length >= stacks.length + 2) {
     launchJumpscare();

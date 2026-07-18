@@ -165,6 +165,42 @@ export const treeDeleteRemovedLine = async (line: string) => {
   await invoke("tree_delete_removed_line", { line });
 };
 
+/* Nodelocking */
+
+export const treePushRangeLock = async (lockRange: number[], lockLimit: number[]) => 
+{
+  await invoke("tree_push_range_lock", { lockRange, lockLimit } );
+}
+
+export const treePullRangeLock = async (): Promise<[number[] | null, number[] | null]> =>
+{
+  return await invoke("tree_pull_range_lock");
+}
+
+export const treePushRuleLock = async (ruleTupleArray: RuleLock[] | null) => 
+{
+  await invoke("tree_push_rule_lock", { rules: ruleTupleArray } );
+}
+
+export const treePullRuleLock = async (): Promise<RuleLock[] | null> =>
+{
+  return await invoke("tree_pull_rule_lock");
+}
+
+export const treeExtractNodelocks = async (): Promise<[ rangeLocks: [String[], number[], number[]][], ruleLocks: [String[], RuleLock[]][] ]> =>
+{
+  return await invoke("tree_extract_nodelocks");
+}
+
+export const treePushAll = async (lockingRangesUnparsed: [String[], Number[], Number[]][], lockingRulesUnparsed: [String[], RuleLock[]][] ) => {
+  await invoke("tree_push_all", { lockingRangesUnparsed, lockingRulesUnparsed });
+}
+
+export const treePoliceLocks = async (board: number[]): Promise<string[]> => {
+  return await invoke("tree_police_locks", { board });
+};
+
+
 /* Bunching effect */
 
 export const bunchingInit = async (board: number[]): Promise<string | null> => {
@@ -211,7 +247,9 @@ export const gameInit = async (
   forceAllinThreshold: number,
   mergingThreshold: number,
   addedLines: string,
-  removedLines: string
+  removedLines: string,
+  lockingRangesUnparsed: [String[], Number[], Number[]] [],
+  lockingRulesUnparsed: [String[], RuleLock[]] []
 ): Promise<string | null> => {
   return await invoke("game_init", {
     board,
@@ -250,6 +288,9 @@ export const gameInit = async (
     mergingThreshold,
     addedLines,
     removedLines,
+
+    lockingRangesUnparsed,
+    lockingRulesUnparsed
   });
 };
 
@@ -301,6 +342,10 @@ export const gameActionsAfter = async (append: number[]): Promise<string[]> => {
 
 export const gamePossibleCards = async (): Promise<bigint> => {
   return BigInt(await invoke("game_possible_cards"));
+};
+
+export const gameVerifyLocks = async (): Promise<boolean> => {
+  return await invoke("game_verify_locks");
 };
 
 type ResultsResponse = {
@@ -363,4 +408,12 @@ export const gameGetChanceReports = async (
     eqr: reports.eqr,
     strategy: reports.strategy,
   };
+};
+
+export interface RuleLock
+{
+  ruleType: [number, number, number];
+  percentage: number;
+  limitation: number;
+  priority: number;
 };

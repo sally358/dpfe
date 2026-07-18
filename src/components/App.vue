@@ -34,7 +34,16 @@
           <BoardSelector />
         </div>
         <div v-show="store.sideView === 'tree-config'">
-          <TreeConfig />
+          <TreeConfig 
+          @setupTree="reloadNodelock" 
+          @pushThemAll="pushEverySingleOneOfThem"
+          />
+        </div>
+        <div v-show="store.sideView === 'node-locking'">
+          <NodeLocking 
+          :key="renodeLock" 
+          ref="nodeLocker"
+          />
         </div>
         <div v-show="store.sideView === 'icm'">
           <ICM />
@@ -76,6 +85,7 @@ import SideBar from "./SideBar.vue";
 import RangeEditor from "./RangeEditor.vue";
 import BoardSelector from "./BoardSelector.vue";
 import TreeConfig from "./TreeConfig.vue";
+import NodeLocking from "./NodeLocking.vue";
 import ICM from "./ICM.vue";
 import BunchingEffect from "./BunchingEffect.vue";
 import RunSolver from "./RunSolver.vue";
@@ -83,14 +93,24 @@ import AboutPage from "./AboutPage.vue";
 import ResultViewer from "./ResultViewer.vue";
 import ExportPage from "./ExportPage.vue";
 
+const renodeLock = ref(0)
+const nodeLocker = ref<InstanceType<typeof NodeLocking> | null>(null)
+
 const store = useStore();
-console.log(store.sideView)
 const header = computed(() => store.headers[store.sideView].join(" > "));
 
 const clientHeight = ref(0);
 const updateClientHeight = () => {
   clientHeight.value = document.documentElement.clientHeight - 0.01;
 };
+
+const reloadNodelock = () => {
+  renodeLock.value += 1;
+};
+
+const pushEverySingleOneOfThem = () => {
+  nodeLocker.value?.wellLetsLoad()
+}
 
 updateClientHeight();
 window.addEventListener("resize", updateClientHeight);

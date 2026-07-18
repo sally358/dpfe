@@ -1,3 +1,9 @@
+<!--
+
+The PiO-esque thing at the top for selecting actions and cards
+
+-->
+
 <template>
   <div
     ref="navDiv"
@@ -84,6 +90,7 @@
               >
                 <ChevronLeftIcon class="w-full h-full" />
               </button>
+
               <button
                 :class="
                   'absolute -right-[1.375rem] top-1/2 -mt-3 w-6 h-6 ' +
@@ -97,6 +104,7 @@
               >
                 <ChevronRightIcon class="w-full h-full" />
               </button>
+
               <button
                 :class="
                   'absolute -bottom-[1.375rem] left-1/2 -ml-3 w-6 h-6 ' +
@@ -110,6 +118,7 @@
               >
                 <ChevronDownIcon class="w-full h-full" />
               </button>
+
             </template>
           </div>
           <div
@@ -451,6 +460,7 @@ const selectSpot = async (
       const history = spots.value
         .slice(1, riverIndex)
         .map((spot) => spot.selectedIndex);
+      
       await invokes.gameApplyHistory(history);
       const possibleCards = await invokes.gamePossibleCards();
       for (let i = 0; i < 52; ++i) {
@@ -475,6 +485,7 @@ const selectSpot = async (
       const history = spots.value
         .slice(1, -1)
         .map((spot) => spot.selectedIndex);
+      
       await invokes.gameApplyHistory(history);
       const results = await invokes.gameGetResults();
       if (!results.isEmpty) {

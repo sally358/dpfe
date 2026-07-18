@@ -1,13 +1,11 @@
 desktop postflop foldem edition. fork of https://github.com/b-inary/desktop-postflop. yeah, you have to compile it to use it.
 
 added sally features:
-* (1) strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
-* (2) drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
-* (3) icm support (seems to work well, but I'm still not sure)
-
-in development:
-* (4) nodelocking and rulelocking (done, pending)
-* (5) saving modified trees
+* strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
+* drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
+* icm support (seems to work well, but I'm still not sure)
+* nodelocking and rulelocking [indev]
+* tree exporting [indev]
 
 planned features:
 * PKO stuff
@@ -21,9 +19,7 @@ Don't expect any of this any time soon, only when i'll have inpiration and volit
 
 
 # IMPORTANT NOTES:
-* DO NOT start exporting drills until the previous drills were exported and the download started. IT WILL BREAK YOUR SOLVER AND YOU WILL HAVE TO RESTART IT TO EXPORT NEW DRILLS.
 * If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
-* DO NOT trust the "ICM mode can significantly slow down the solver, and it gets exponentially worse the more payout steps you input. Consider using lesser payout steps". This warning is a LIE. I added caching. Make payout structure as big as you want. (The higher exploitability part is true tho)
 * It should be obvious but DO NOT use it through "npm tauri run dev". It is comically slow. Just compile it and run it normally, it is literally 100 times faster that way (YES, LITERALLY 100 TIMES)
 
 # Gem Gemson (PRO) announcement:

@@ -437,10 +437,7 @@ const checkConfig = (
   if (
     ![0, 3, 4, 5].includes(config.expectedBoardLength) ||
     (config.expectedBoardLength === 0 &&
-      (addedLinesArray.length > 0 || removedLinesArray.length > 0)) ||
-    (config.expectedBoardLength > 0 &&
-      addedLinesArray.length === 0 &&
-      removedLinesArray.length === 0)
+      (addedLinesArray.length > 0 || removedLinesArray.length > 0))
   ) {
     return "Invalid configurations (loaded broken configurations?)";
   }
@@ -588,12 +585,25 @@ const buildTree = async () => {
     tmpConfig.forceAllInThreshold / 100,
     tmpConfig.mergingThreshold / 100,
     tmpConfig.addedLines,
-    tmpConfig.removedLines
+    tmpConfig.removedLines,
+    tmpConfig.lockingRanges,
+    tmpConfig.lockingRules
   );
 
   if (errorString) {
     isTreeBuilding.value = false;
     treeStatus.value = "Error: " + errorString;
+    return;
+  }
+
+  treeStatus.value = "Verifying nodelocks..."
+
+  const isError = await invokes.gameVerifyLocks();
+
+  if (isError)
+  {
+    isTreeBuilding.value = false;
+    treeStatus.value = "Error: Conflicting nodelocks. Consult LockSheriff™ in Nodes menu for more info."
     return;
   }
 

@@ -51,6 +51,13 @@ fn main() {
             tree_remove_current_node,
             tree_delete_added_line,
             tree_delete_removed_line,
+            tree_push_range_lock,
+            tree_pull_range_lock,
+            tree_push_rule_lock,
+            tree_pull_rule_lock,
+            tree_extract_nodelocks,
+            tree_push_all,
+            tree_police_locks,
             bunching_init,
             bunching_clear,
             bunching_progress,
@@ -68,7 +75,8 @@ fn main() {
             game_actions_after,
             game_possible_cards,
             game_get_results,
-            game_get_chance_reports
+            game_get_chance_reports,
+            game_verify_locks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

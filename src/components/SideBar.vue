@@ -39,6 +39,10 @@
       Tree Configuration
     </button>
 
+    <button :class="itemStyle('node-locking')" @click="store.sideView = 'node-locking'">
+      Nodes
+    </button>
+
     <button :class="itemStyle('icm')" @click="store.sideView = 'icm'">
       ICM
     </button>
