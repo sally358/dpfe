@@ -4,8 +4,7 @@ added sally features:
 * strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
 * drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
 * icm support (seems to work well, but I'm still not sure)
-* nodelocking and rulelocking [indev]
-* tree exporting [indev]
+* nodelocking and rulelocking
 
 planned features:
 * PKO stuff
@@ -17,10 +16,6 @@ P.S.: separate drill baby drill app was cancelled, i dont have enough memory on 
 
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
-
-# IMPORTANT NOTES:
-* If you are going to use ICM features please read important notes and PLEASE don't live empty lines, I'm too lazy to add empty lines checks today
-* It should be obvious but DO NOT use it through "npm tauri run dev". It is comically slow. Just compile it and run it normally, it is literally 100 times faster that way (YES, LITERALLY 100 TIMES)
 
 # Gem Gemson (PRO) announcement:
 
