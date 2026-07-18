@@ -626,7 +626,7 @@
                 class="button-base button-red"
                 @click="clearEdit"
               >
-                Clear Edit & Unlock
+                Clear Edit & Locks
               </button>
             </div>
           </div>
@@ -742,7 +742,7 @@
           The edited tree assumes a {{ config.expectedBoardLength }}-card board,
           but the current board consists of {{ config.board.length }} cards.
           <br />
-          To reset the edited tree, click the "Clear Edit & Unlock" button.
+          To reset the edited tree, click the "Clear Edit & Locks" button.
         </div>
       </div>
     </div>
@@ -880,7 +880,7 @@ const lockLoaderMode = ref(false);
 const ICMEnabled = computed(() => store.isICMEnabled);
 
 const hasEdit = computed(
-  () => config.addedLines.length > 0 || config.removedLines.length > 0
+  () => config.addedLines.length > 0 || config.removedLines.length > 0 || config.lockingRanges.length > 0 || config.lockingRules.length > 0
 );
 
 const addedLinesArray = computed(() =>
@@ -1257,9 +1257,6 @@ const loadConfigLocks = (value: unknown) => {
   config.lockingRanges = configValue.lockingRanges;
   config.lockingRules = configValue.lockingRules;
 
-  console.log(configValue.lockingRanges)
-  console.log(configValue.lockingRules)
-
   emit("pushThemAll")
 };
 
@@ -1289,6 +1286,10 @@ const clearEdit = () => {
   config.expectedBoardLength = 0;
   config.addedLines = "";
   config.removedLines = "";
+  config.lockingRanges = [];
+  config.lockingRules = [];
+
+  setupTree();
 };
 
 const saveEdit = (addedLines: string, removedLines: string) => {
