@@ -6,8 +6,8 @@ added sally features:
 * (3) icm support (seems to work well, but I'm still not sure)
 
 in development:
-* (4) nodelocking and rulelocking (WIP in v0.3.0)
-* (5) saving modified trees (as a part of nodelocking update)
+* (4) nodelocking and rulelocking (done, pending)
+* (5) saving modified trees
 
 planned features:
 * PKO stuff
