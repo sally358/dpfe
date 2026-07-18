@@ -591,8 +591,6 @@ const createDrills = async () =>
     drillPack.drills.push(newDrill)
 
   }
-  
-  console.log(drillPack)
 
   const blob = new Blob([JSON.stringify(drillPack)])
   const link = document.createElement("a");
