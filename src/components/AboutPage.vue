@@ -1,5 +1,6 @@
 <template>
-  <p>Desktop Postflop v0.2.7</p>
+  <p>Desktop Postflop: Foldem edition v0.3.0</p>
+  <p>Based on Desktop Postflop v0.2.7 by Wataru Inariba</p>
   <p>Copyright (C) 2022 Wataru Inariba</p>
   <p>
     <a
