@@ -5,7 +5,7 @@ description = "The most advanced open-source GTO solver"
 authors = ["Wataru Inariba (Desktop Postflop)", "sally358 (Foldem edition features)"]
 license = "AGPL-3.0-or-later"
 repository = "https://github.com/sally358/postflop-solver-dpfe"
-edition = "2026"
+edition = "2021"
 rust-version = "1.65"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
