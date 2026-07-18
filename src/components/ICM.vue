@@ -238,8 +238,6 @@ const applyICM = () => {
     .split("\n")
     .map((s) => parseInt(s.trim().replace(trimRegex, "")));
 
-  console.log("Applying ICM with stacks:", stacks, "and payouts:", payouts);
-
   if(payouts.length >= stacks.length + 2) {
     launchJumpscare();
     return;
