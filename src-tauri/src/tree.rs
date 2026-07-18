@@ -1,3 +1,5 @@
+use crate::range::*;
+
 use postflop_solver::*;
 use std::sync::Mutex;
 use serde::{Deserialize, Serialize};
@@ -420,7 +422,6 @@ pub fn tree_pull_rule_lock(tree_state: tauri::State<Mutex<ActionTree>>) ->  Opti
     }
     else
     {
-        println!("NONE!!!");
         return None;
     }
     
@@ -439,7 +440,6 @@ pub fn tree_push_all(
         let mut line_vec = Vec::new() as Vec<Action>;
 
         for line_str in line_strs {
-            println!("decoding range rule line: {line_str}");
             line_vec.push(
                 decode_action(&line_str)
             );
@@ -448,7 +448,7 @@ pub fn tree_push_all(
         let range_parsed = rrange.iter().map(|&r| r / 100.0).collect();
 
         match tree.push_range_lock_recursive(&line_vec, range_parsed, lrange, 0, None) {
-            Err(e) => println!("Something's fishy with locking ranges: {e}"),
+            Err(e) => println!("Locking range error: {e}"),
             Ok(_) => (),
         };
     }
@@ -457,7 +457,6 @@ pub fn tree_push_all(
         let mut line_vec = Vec::new() as Vec<Action>;
 
         for line_str in line_strs {
-            println!("decoding locking rule line: {line_str}");
             line_vec.push(
                 decode_action(&line_str)
             );
@@ -466,8 +465,35 @@ pub fn tree_push_all(
         let ass_rule_locks = rule_locks.iter().map(|rl| rl.normalize()).collect();
 
         match tree.push_rule_lock_recursive(&line_vec, Some(ass_rule_locks), 0, None) {
-            Err(e) => println!("Yikes, you locking range just friggin died: {e}"),
+            Err(e) => println!("Rule locks error: {e}"),
             Ok(_) => (),
         }
     }
+}
+
+#[tauri::command]
+pub fn tree_police_locks(
+    range_state: tauri::State<Mutex<RangeManager>>,
+    tree_state: tauri::State<Mutex<ActionTree>>,
+    board: Vec<u8>
+) -> Vec<String>
+{
+    let tree = tree_state.lock().unwrap();
+    let ranges = &range_state.lock().unwrap().0;
+
+    let (turn, river) = match board.len() {
+        3 => (NOT_DEALT, NOT_DEALT),
+        4 => (board[3], NOT_DEALT),
+        5 => (board[3], board[4]),
+        _ => return vec!["Invalid board length".to_owned()],
+    };
+
+    let card_config = CardConfig {
+        range: ranges[..2].try_into().unwrap(),
+        flop: board[..3].try_into().unwrap(),
+        turn,
+        river,
+    };
+
+    police_locks_strings(tree, &card_config)
 }
