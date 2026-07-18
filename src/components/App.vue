@@ -97,7 +97,6 @@ const renodeLock = ref(0)
 const nodeLocker = ref<InstanceType<typeof NodeLocking> | null>(null)
 
 const store = useStore();
-console.log(store.sideView)
 const header = computed(() => store.headers[store.sideView].join(" > "));
 
 const clientHeight = ref(0);
