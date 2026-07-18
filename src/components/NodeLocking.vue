@@ -1,6 +1,6 @@
 <template>
   <div v-if="store.isTreeSetup">
-    <div v-if="!inEditor">
+    <div v-if="!inEditor && !inScanner">
       <div
           class="flex pl-2.5 pr-3 py-1 text-cyan-600 bg-cyan-50 border-2 border-cyan-600 rounded-md font-semibold"
         >
@@ -564,8 +564,8 @@
           Save Edit & Locks
         </button>
 
-        <button class="button-base button-red" @click="cancelEdit">
-          Cancel
+        <button class="button-base button-green" @click="startScanner">
+          LockSheriff™
         </button>
       </div>
 
@@ -616,11 +616,16 @@
     </div>
 
     <RangeEditor
-      v-else
+      v-else-if="inEditor"
       :player="2"
       :default-text="rangeTextCopy"
       @save="saveRangeEdit"
       @cancel="cancelRangeEdit"
+    />
+
+    <LockSheriff
+      v-else-if="inScanner"
+      @exit="exitScanner"
     />
   </div>
   <div v-else>
@@ -645,6 +650,7 @@ import { TrashIcon } from "@heroicons/vue/24/outline";
 
 import RangeEditor from "./RangeEditor.vue";
 import RangeMiniViewer from "./RangeMiniViewer.vue";
+import LockSheriff from "./LockSheriff.vue";
 
 import { Tippy } from "vue-tippy";
 import {
@@ -792,8 +798,6 @@ const selectSpot = async (
   needRebuild: boolean,
   needAmountUpdate: boolean
 ) => {
-  console.log(spotIndex)
-
   if (!needSplice && !needRebuild && spotIndex === selectedSpotIndex.value) {
     return;
   }
@@ -1025,7 +1029,6 @@ const saveEdit = async () => {
   } else {
     config.expectedBoardLength = boardLength;
   }
-  console.log("expected", boardLength);
 
   let locks = await invokes.treeExtractNodelocks();
 
@@ -1141,6 +1144,7 @@ defineExpose({
 
 
 const inEditor = ref(false);
+const inScanner = ref(false)
 const rangeText = ref("");
 const isRangeTextError = ref(false);
 const numCombos = ref(0);
@@ -1163,6 +1167,16 @@ const editRange = async () => {
   rangeTextCopy.value = await invokes.rangeToString(2);
   store.headers["node-locking"].push(`Action range`);
   inEditor.value = true;
+};
+
+const startScanner = async () => {
+  store.headers["node-locking"].push(`LockSheriff™`);
+  inScanner.value = true;
+};
+
+const exitScanner = async () => {
+  inScanner.value = false;
+  store.headers["node-locking"].pop();
 };
 
 const onRangeTextChange = async () => {
@@ -1211,13 +1225,9 @@ const pushRules = async () => {
     priority: currentPriority.value
   })
 
-  console.log(store.currentRules)
-  
   await invokes.treePushRuleLock(store.currentRules);
 
   await updateRules();
-
-  console.log(store.currentRules)
 };
 
 const deleteRule = async (index: number) => {
@@ -1587,7 +1597,6 @@ const currentLimitation = ref(0);
 const currentPriority = ref(0);
 
 const onGroupChange = () => {
-  console.log(currentGroup)
   currentCriterium.value = 0;
   currentSpecification.value = 0;
 };
