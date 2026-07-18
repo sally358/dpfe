@@ -1200,7 +1200,6 @@ const tupleData = computed(() => {
 
       const tuples = allTuples.filter(
         (elem, i) => {
-          console.log(elem[0]);
           const handId = allCards.indexOf(elem[0]);
 
           return weights[handId] > 0 // && normalizer[i] > 0
