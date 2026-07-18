@@ -179,8 +179,6 @@ export const treePullRangeLock = async (): Promise<[number[] | null, number[] | 
 
 export const treePushRuleLock = async (ruleTupleArray: RuleLock[] | null) => 
 {
-  console.log("here")
-
   await invoke("tree_push_rule_lock", { rules: ruleTupleArray } );
 }
 
@@ -197,6 +195,11 @@ export const treeExtractNodelocks = async (): Promise<[ rangeLocks: [String[], n
 export const treePushAll = async (lockingRangesUnparsed: [String[], Number[], Number[]][], lockingRulesUnparsed: [String[], RuleLock[]][] ) => {
   await invoke("tree_push_all", { lockingRangesUnparsed, lockingRulesUnparsed });
 }
+
+export const treePoliceLocks = async (board: number[]): Promise<string[]> => {
+  return await invoke("tree_police_locks", { board });
+};
+
 
 /* Bunching effect */
 
@@ -339,6 +342,10 @@ export const gameActionsAfter = async (append: number[]): Promise<string[]> => {
 
 export const gamePossibleCards = async (): Promise<bigint> => {
   return BigInt(await invoke("game_possible_cards"));
+};
+
+export const gameVerifyLocks = async (): Promise<boolean> => {
+  return await invoke("game_verify_locks");
 };
 
 type ResultsResponse = {
