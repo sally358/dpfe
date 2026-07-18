@@ -189,7 +189,6 @@ pub fn game_init(
         let mut line_vec = Vec::new() as Vec<Action>;
 
         for line_str in line_strs {
-            println!("decoding range rule line: {line_str}");
             line_vec.push(
                 decode_action(&line_str)
             );
@@ -198,7 +197,7 @@ pub fn game_init(
         let range_parsed = rrange.iter().map(|&r| r / 100.0).collect();
 
         match action_tree.push_range_lock_recursive(&line_vec, range_parsed, lrange, 0, None) {
-            Err(e) => println!("Something's fishy with locking ranges: {e}"),
+            Err(e) => println!("Locking range error: {e}"),
             Ok(_) => (),
         };
     }
@@ -207,7 +206,6 @@ pub fn game_init(
         let mut line_vec = Vec::new() as Vec<Action>;
 
         for line_str in line_strs {
-            println!("decoding locking rule line: {line_str}");
             line_vec.push(
                 decode_action(&line_str)
             );
@@ -216,7 +214,7 @@ pub fn game_init(
         let ass_rule_locks = rule_locks.iter().map(|rl| rl.normalize()).collect();
 
         match action_tree.push_rule_lock_recursive(&line_vec, Some(ass_rule_locks), 0, None) {
-            Err(e) => println!("Yikes, you locking range just friggin died: {e}"),
+            Err(e) => println!("Rule locks error: {e}"),
             Ok(_) => (),
         }
     }
@@ -224,6 +222,16 @@ pub fn game_init(
 
     let mut game = game_state.lock().unwrap();
     game.update_config(card_config, action_tree).err()
+}
+
+#[tauri::command]
+pub fn game_verify_locks(game_state: tauri::State<Mutex<PostFlopGame>>) -> bool
+{
+    let game = game_state.lock().unwrap();
+
+    let error_vec = game.verify_locks();
+
+    error_vec.len() > 0
 }
 
 #[tauri::command]
