@@ -6,18 +6,22 @@ added sally features:
 * icm support (seems to work well, but I'm still not sure)
 * nodelocking and rulelocking.
 
+
 On the nodelocking rulelocking update: rule locks allow you to set up generic rules (board texture, turn / river cards, made hand class, board nut hands, draws, hand types and other criteria) to:
 a) precisely select and nodelock specific hands, since the range currently support locking generic hands like AKs or 72o,
 b) extrepolate nodelocks on all potential turn and river outcomes while preserving logic
 
 
-planned features:
-* PKO stuff
+planned next update:
 * exporting
 * blocker info
+* batch solving
+
+
+planned features:
+* PKO stuff
 * mega drills. drill exports works, but we may or may not want to add a built-in driller.
 
-P.S.: separate drill baby drill app was cancelled, i dont have enough memory on my pc for another bloated tauri app
 
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
