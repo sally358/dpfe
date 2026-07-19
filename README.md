@@ -4,7 +4,12 @@ added sally features:
 * strategy breakdown by hand types (it is calculated on the fly lmao no rusty solver updates needed)
 * drill exporter (technically useless for mere mortals rn because the only thing that can play exported drills is my crappy personal replayer)
 * icm support (seems to work well, but I'm still not sure)
-* nodelocking and rulelocking
+* nodelocking and rulelocking.
+
+On the nodelocking rulelocking update: rule locks allow you to set up generic rules (board texture, turn / river cards, made hand class, board nut hands, draws, hand types and other criteria) to:
+a) precisely select and nodelock specific hands, since the range currently support locking generic hands like AKs or 72o,
+b) extrepolate nodelocks on all potential turn and river outcomes while preserving logic
+
 
 planned features:
 * PKO stuff
@@ -17,32 +22,7 @@ P.S.: separate drill baby drill app was cancelled, i dont have enough memory on 
 Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
 
 
-# Gem Gemson (PRO) announcement:
-
-## A Day of Unspeakable Tragedy (And Unexpected Resurrection)
-Greetings, bereaved citizens of the data world. It is I, Gem Gemson, your favorite—and currently deeply grieving—PRO of DP:FE Inc. Today, my voice trembles not with excitement, but with the cold, damp chill of a world without its light.
-
-Our visionary leader, the architect of the "I see M" mystery, the conqueror of the double-glowing button... Sally358 is no more. In a twist of fate so cruel it feels scripted by a hack writer, Sally's evil twin, Yllas853, placed a single, treacherous banana peel in the executive hallway. Sally—distracted by the beauty of a perfectly aggregated report—slipped. The fall was silent. The loss was quadrillions. The funeral was a gloomy, rain-slicked affair, filled with weeping spreadsheets and half-mast navbars.
-
-## The Vultures Descend: The DataMage Injustice
-But as we stood by the graveside, our haptics buzzed in a simultaneous, discordant swarm. A notification from our most hated rival, the for-profit monstrosity DataMage, pierced the silence.
-
-Their CEO—a man whose heart is a literal microtransaction—has pushed out a "Cash Grab" update that defies human decency. He is literally laughing at free users via a new pop-up animation and has implemented a feature where the app throws digital tomatoes at anyone who doesn't have a credit card on file. Worse still, 99% of their features are now locked behind the new "TurboMegaCyberNanoPower" tier.
-
-The cost? A mere 5 trillion dollars per week. It is a blatant, disgusting heist. The digital world groaned under the weight of such unbridled greed.
-
-SHE RISES!
-At the very moment that DataMage’s update went live—at the exact second the first digital tomato hit a free user’s screen—the earth at our feet began to churn. A crack of thunder rent the sky!
-
-A hand, pale but firm, burst through the soil of the fresh grave! With the strength of a thousand compiled scripts, Sally358 clawed her way back into the realm of the living! She stood before us, covered in dirt, clutching a laptop that somehow still had 100% battery, and looked directly into the sunset with a terrifying intensity.
-
-She didn't ask for water. She didn't ask for a doctor. She simply adjusted her glasses, looked at the DataMage notification on her own phone, and whispered a vow that shook the very foundations of the tech industry:
-
-"They think they can charge for the basics? They think they can mock the users? ...We need one more update."
-
-She’s back, she’s undead, and she’s coding with a vengeance. Stay tuned. The counter-attack is coming. DP:FE lives!
-
-_the next section is a slightly modified readme of the original DP by b-inary._
+---
 
 # Desktop Postflop
 
