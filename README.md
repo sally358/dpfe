@@ -23,7 +23,7 @@ planned features:
 * mega drills. drill exports works, but we may or may not want to add a built-in driller.
 
 
-Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die and there will never be any updates. Who knows.
+Don't expect any of this any time soon, only when i'll have inpiration and volition. Maybe november. Maybe january. Maybe around year 2030. Maybe I'll slip on a banana peel tomorrow and die (again) and there will never be any updates. Who knows.
 
 
 ---
