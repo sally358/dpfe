@@ -20,6 +20,7 @@ planned next update:
 
 planned features:
 * PKO stuff
+* 6-max support
 * mega drills. drill exports works, but we may or may not want to add a built-in driller.
 
 
