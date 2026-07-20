@@ -16,6 +16,9 @@ planned next update:
 * exporting
 * blocker info
 * batch solving
+* batch viewing
+* finally saving icm configs
+* an easy nodelocking tree draft creator
 
 
 planned features:
